@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace OthelloWPF
 {
-    /// <summary>
-    /// Logique d'interaction pour MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -39,7 +36,12 @@ namespace OthelloWPF
                     ChessSquareControl square = new ChessSquareControl();
                     square.HorizontalAlignment = HorizontalAlignment.Stretch;
                     square.VerticalAlignment = VerticalAlignment.Stretch;
+
                     square.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(onBoardClick));
+
+                    square.x = i;
+                    square.y = j;
+
                     board.Children.Add(square);
                 }
             }
@@ -47,7 +49,8 @@ namespace OthelloWPF
 
         private void onBoardClick(object sender, RoutedEventArgs e)
         {
-            System.Console.WriteLine("Clicked");
+            ChessSquareControl square = (ChessSquareControl)sender;
+            System.Console.WriteLine("Clicked : ("+square.x+","+square.y+")");
         }
     }
 }

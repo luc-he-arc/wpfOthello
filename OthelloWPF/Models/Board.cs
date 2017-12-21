@@ -8,5 +8,6 @@ namespace OthelloWPF.Models
 {
     class Board
     {
+
     }
 }

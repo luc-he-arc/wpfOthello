@@ -15,11 +15,13 @@ using System.Windows.Shapes;
 
 namespace OthelloWPF
 {
-    /// <summary>
-    /// Logique d'interaction pour ChessSquareControl.xaml
-    /// </summary>
+    
     public partial class ChessSquareControl : UserControl
     {
+        //TODO protéger
+        public int x;
+        public int y;
+
         public ChessSquareControl()
         {
             InitializeComponent();
