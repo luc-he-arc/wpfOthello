@@ -39,47 +39,15 @@ namespace OthelloWPF
                     ChessSquareControl square = new ChessSquareControl();
                     square.HorizontalAlignment = HorizontalAlignment.Stretch;
                     square.VerticalAlignment = VerticalAlignment.Stretch;
+                    square.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(onBoardClick));
                     board.Children.Add(square);
                 }
             }
-
-            //V1
-            /*Grid board = Board;
-
-            for (int i = 0; i < colCount; i++)
-            {
-                ColumnDefinition col = new ColumnDefinition();
-                col.Width = GridLength.Auto;
-                new GridLength(0, GridUnitType.Star);
-                board.ColumnDefinitions.Add(col);
-
-                for (int j = 0; j < rowCount; j++)
-                {
-                    RowDefinition row = new RowDefinition();
-                    row.Height = GridLength.Auto;
-                    board.RowDefinitions.Add(row);
-                }
-            }
-
-            //https://stackoverflow.com/questions/11701749/append-a-child-to-a-grid-set-its-row-and-column
-            for (int i = 0; i < colCount; i++)
-            {
-                for (int j = 0; j < rowCount; j++)
-                {
-                    ChessSquareControl square = new ChessSquareControl();
-                    //square.Height = UserControl.
-                    //square.Height = GridUnitType.Star;
-                    board.Children.Add(square);
-                    Grid.SetColumn(square, i);
-                    Grid.SetRow(square, j);
-                }
-            }
-            */
         }
 
-        private void ChessSquareControl_Loaded(object sender, RoutedEventArgs e)
+        private void onBoardClick(object sender, RoutedEventArgs e)
         {
-
+            System.Console.WriteLine("Clicked");
         }
     }
 }
