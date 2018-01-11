@@ -56,7 +56,10 @@
     </ApplicationDefinition>
     <Compile Include="IPlayable.cs" />
     <Compile Include="Models\Board.cs" />
+    <Compile Include="Models\GameController.cs" />
     <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\HumanPlayer.cs" />
+    <Compile Include="Models\AIPlayer.cs" />
     <Compile Include="Models\Player.cs" />
     <Page Include="ChessSquareControl.xaml">
       <SubType>Designer</SubType>
@@ -104,6 +107,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\black.png" />
+    <Resource Include="Images\white.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

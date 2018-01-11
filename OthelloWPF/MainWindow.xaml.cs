@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OthelloWPF.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,39 +19,57 @@ namespace OthelloWPF
 {
     public partial class MainWindow : Window
     {
+        GameController gameController;
+        UniformGrid graphicalBoard;
+
         public MainWindow()
         {
+            //Graphics
             InitializeComponent();
 
-            //TODO en dynamique
             int rowCount = 8;            
             int colCount = rowCount;
 
-            UniformGrid board = Board;
-            board.Children.Clear();
+            graphicalBoard = Board;
+            graphicalBoard.Children.Clear();
 
+            //Logics
+            Game game = new Game(rowCount, new HumanPlayer(), new HumanPlayer());
+            gameController = new GameController(game, graphicalBoard);
+
+            //Generate board
             for (int i = 0; i < colCount; i++)
             {
                 for (int j = 0; j < rowCount; j++)
                 {
-                    ChessSquareControl square = new ChessSquareControl();
-                    square.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    square.VerticalAlignment = VerticalAlignment.Stretch;
+                    ChessSquareControl square = new ChessSquareControl
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        VerticalAlignment = VerticalAlignment.Stretch
+                    };
 
                     square.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(onBoardClick));
 
                     square.x = i;
                     square.y = j;
 
-                    board.Children.Add(square);
+                    graphicalBoard.Children.Add(square);
                 }
             }
         }
 
         private void onBoardClick(object sender, RoutedEventArgs e)
         {
-            ChessSquareControl square = (ChessSquareControl)sender;
-            System.Console.WriteLine("Clicked : ("+square.x+","+square.y+")");
+            bool whiteTurn = gameController.WhoseTurn();
+            ChessSquareControl square = (ChessSquareControl) sender;
+
+            bool update = gameController.PlayMove(square.x, square.y, whiteTurn);
+
+            if (update)
+                if (whiteTurn)
+                    square.setBlack();
+                else
+                    square.SetWhite();
         }
     }
 }

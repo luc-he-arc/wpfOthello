@@ -8,14 +8,24 @@ namespace OthelloWPF.Models
 {
     class Board
     {
-        const int IS_WHITE = -1;
-        const int IS_EMPTY = 0;
-        const int IS_BLACK = 1;
+        //values: 0 for white 1 for black and -1 for empty tiles
+        public const int IS_WHITE = 0;
+        public const int IS_BLACK = 1;
+        public const int IS_EMPTY = -1;
+
         int[,] values;
 
-        public Board()
+        public Board(int size)
         {
+            values = new int[size, size];
 
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    values[i, j] = -1;
+                }
+            }
         }
 
 

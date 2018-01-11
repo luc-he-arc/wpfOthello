@@ -6,55 +6,50 @@ using System.Threading.Tasks;
 
 namespace OthelloWPF.Models
 {
-    class Game : IPlayable
+    class Game
     {
         Player player1;
         Player player2;
 
         Board board;
 
-        public Game(Player player1, Player player2)
+        public bool whiteTurn { get; set; }
+
+        public Game(int size, Player player1, Player player2)
         {
             this.player1 = player1;
             this.player2 = player2;
 
-            board = new Board();
+            board = new Board(size);
+
+            //White begin
+            whiteTurn = true;
         }
 
-        //*      IPlayable      *//
-        public int GetBlackScore()
+        public void PlayMove(int column, int line, bool isWhite)
+        {
+            board[column, line] = TurnBoolToTurnValue(isWhite);
+
+            //Change turn
+            whiteTurn = !isWhite;
+        }
+
+        internal int getWhiteScore()
         {
             throw new NotImplementedException();
         }
 
-        public int[,] GetBoard()
+        internal int getBlackScore()
         {
             throw new NotImplementedException();
         }
 
-        public string GetName()
+        private int TurnBoolToTurnValue(bool isWhiteTurn)
         {
-            throw new NotImplementedException();
-        }
-
-        public Tuple<int, int> GetNextMove(int[,] game, int level, bool whiteTurn)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetWhiteScore()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsPlayable(int column, int line, bool isWhite)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool PlayMove(int column, int line, bool isWhite)
-        {
-            throw new NotImplementedException();
+            if (isWhiteTurn)
+                return 0;
+            else
+                return 1;
         }
     }
 }

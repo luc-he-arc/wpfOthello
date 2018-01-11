@@ -11,5 +11,6 @@
         <Border Background="Black" BorderThickness="1">
             <Button Background="#FFFFF19B"></Button>
         </Border>
+        <Image Name="Image"></Image>
     </Grid>
 </UserControl>

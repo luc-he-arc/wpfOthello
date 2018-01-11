@@ -18,13 +18,24 @@ namespace OthelloWPF
     
     public partial class ChessSquareControl : UserControl
     {
-        //TODO protéger
         public int x;
         public int y;
 
         public ChessSquareControl()
         {
             InitializeComponent();
+        }
+
+        public void setBlack()
+        {
+            Image image = Image;
+            image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/black.png", UriKind.Relative));
+        }
+
+        public void SetWhite()
+        {
+            Image image = Image;
+            image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/white.png", UriKind.Relative));
         }
     }
 }
