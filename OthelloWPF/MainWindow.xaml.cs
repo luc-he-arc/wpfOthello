@@ -56,10 +56,10 @@ namespace OthelloWPF
                     square.y = j;
 
                     graphicalBoard.Children.Add(square);
-
-
                 }
             }
+
+            UpdateBoard();
         }
 
         private void OnBoardClick(object sender, RoutedEventArgs e)

@@ -45,7 +45,6 @@ namespace OthelloWPF.Models
             throw new NotImplementedException();
         }
 
-
         public bool IsPlayable(int column, int line, bool isWhite)
         {
             //TODO
