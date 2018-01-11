@@ -23,24 +23,26 @@ namespace OthelloWPF
         UniformGrid graphicalBoard;
 
         public MainWindow()
-        {
+        {   
+            //Logics
+            int size = 8;
+            Game game = new Game(size, new HumanPlayer(), new HumanPlayer());
+            gameController = new GameController(game, graphicalBoard);
+            
             //Graphics
             InitializeComponent();
+                      
+            InitBoard(size, size); 
+        }
 
-            int rowCount = 8;            
-            int colCount = rowCount;
-
+        private void InitBoard(int column, int line)
+        {
             graphicalBoard = Board;
             graphicalBoard.Children.Clear();
 
-            //Logics
-            Game game = new Game(rowCount, new HumanPlayer(), new HumanPlayer());
-            gameController = new GameController(game, graphicalBoard);
-
-            //Generate board
-            for (int i = 0; i < colCount; i++)
+            for (int i = 0; i < column; i++)
             {
-                for (int j = 0; j < rowCount; j++)
+                for (int j = 0; j < line; j++)
                 {
                     ChessSquareControl square = new ChessSquareControl
                     {
@@ -48,28 +50,52 @@ namespace OthelloWPF
                         VerticalAlignment = VerticalAlignment.Stretch
                     };
 
-                    square.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(onBoardClick));
+                    square.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(OnBoardClick));
 
                     square.x = i;
                     square.y = j;
 
                     graphicalBoard.Children.Add(square);
+
+
                 }
             }
         }
 
-        private void onBoardClick(object sender, RoutedEventArgs e)
+        private void OnBoardClick(object sender, RoutedEventArgs e)
         {
             bool whiteTurn = gameController.WhoseTurn();
             ChessSquareControl square = (ChessSquareControl) sender;
 
             bool update = gameController.PlayMove(square.x, square.y, whiteTurn);
-
             if (update)
-                if (whiteTurn)
-                    square.setBlack();
-                else
-                    square.SetWhite();
+                UpdateBoard();
+        }
+
+        private void UpdateBoard()
+        {
+            int[,] board = gameController.GetBoard();
+
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    int logicSquare = board[i, j];
+                    ChessSquareControl graphicalSquare = GetChessControlFromIndex(i, j);
+
+                    if (logicSquare == LogicalBoard.IS_WHITE)
+                        graphicalSquare.SetWhite();
+                    else if (logicSquare == LogicalBoard.IS_BLACK)
+                        graphicalSquare.SetBlack();
+                    else
+                        graphicalSquare.setEmpty();
+                }
+            }
+        }
+
+        private ChessSquareControl GetChessControlFromIndex(int col, int row)
+        {
+            return (ChessSquareControl) graphicalBoard.Children[col * 8 + row];
         }
     }
 }

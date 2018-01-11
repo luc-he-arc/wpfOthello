@@ -20,10 +20,15 @@ namespace OthelloWPF.Models
 
         public bool WhoseTurn()
         {
-            return game.whiteTurn;
+            return game.WhiteTurn;
         }
 
         //*      IPlayable      *//
+        public int[,] GetBoard()
+        {
+            return game.getBoard();
+        }
+
         public int GetBlackScore()
         {
             return game.getBlackScore();
@@ -36,12 +41,14 @@ namespace OthelloWPF.Models
 
         public Tuple<int, int> GetNextMove(int[,] game, int level, bool whiteTurn)
         {
+            //If AI
             throw new NotImplementedException();
         }
 
 
         public bool IsPlayable(int column, int line, bool isWhite)
         {
+            //TODO
             //throw new NotImplementedException();
             return true;
         }
@@ -58,10 +65,6 @@ namespace OthelloWPF.Models
         }
 
         /*  Unused here */
-        public int[,] GetBoard()
-        {
-            throw new NotImplementedException();
-        }
 
         public string GetName()
         {

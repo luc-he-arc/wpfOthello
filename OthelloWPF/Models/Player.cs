@@ -8,5 +8,13 @@ namespace OthelloWPF.Models
 {
     class Player
     {
+        public string name { get; set; }
+        public int score { get; set; }
+
+        public Player()
+        {
+            name = "Paul";
+            score = 0;
+        }
     }
 }

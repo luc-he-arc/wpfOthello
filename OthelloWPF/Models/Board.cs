@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace OthelloWPF.Models
 {
-    class Board
+    class LogicalBoard
     {
         //values: 0 for white 1 for black and -1 for empty tiles
         public const int IS_WHITE = 0;
         public const int IS_BLACK = 1;
         public const int IS_EMPTY = -1;
 
-        int[,] values;
+        public int[,] Values { get; }
 
-        public Board(int size)
+        public LogicalBoard(int size)
         {
-            values = new int[size, size];
+            Values = new int[size, size];
 
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
-                    values[i, j] = -1;
+                    Values[i, j] = -1;
                 }
             }
         }
@@ -34,12 +34,12 @@ namespace OthelloWPF.Models
         {
             get
             {
-                return values[index, index2];
+                return Values[index, index2];
             }
 
             set
             {
-                values[index, index2] = value;
+                Values[index, index2] = value;
             }
         }
     }

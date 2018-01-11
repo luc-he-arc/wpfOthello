@@ -26,16 +26,19 @@ namespace OthelloWPF
             InitializeComponent();
         }
 
-        public void setBlack()
+        public void SetBlack()
         {
-            Image image = Image;
-            image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/black.png", UriKind.Relative));
+            Image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/black.png", UriKind.Relative));
         }
 
         public void SetWhite()
         {
-            Image image = Image;
-            image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/white.png", UriKind.Relative));
+            Image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/white.png", UriKind.Relative));
+        }
+
+        internal void setEmpty()
+        {
+            Image.Source = null;
         }
     }
 }
