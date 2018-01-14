@@ -8,10 +8,7 @@ namespace OthelloWPF.Models
 {
     class LogicalBoard
     {
-        //values: 0 for white 1 for black and -1 for empty tiles
-        public const int IS_WHITE = 0;
-        public const int IS_BLACK = 1;
-        public const int IS_EMPTY = -1;
+        public enum PawnState { White = 0, Black = 1, Empty = -1};
 
         public int[,] Values { get; }
 
@@ -23,7 +20,7 @@ namespace OthelloWPF.Models
             {
                 for (int j = 0; j < size; j++)
                 {
-                    Values[i, j] = -1;
+                    Values[i, j] = (int) PawnState.Empty;
                 }
             }
         }

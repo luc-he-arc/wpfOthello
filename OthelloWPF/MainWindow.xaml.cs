@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static OthelloWPF.Models.LogicalBoard;
 
 namespace OthelloWPF
 {
@@ -52,8 +53,8 @@ namespace OthelloWPF
 
                     square.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(OnBoardClick));
 
-                    square.x = i;
-                    square.y = j;
+                    square.x = j;
+                    square.y = i;
 
                     graphicalBoard.Children.Add(square);
                 }
@@ -76,16 +77,17 @@ namespace OthelloWPF
         {
             int[,] board = gameController.GetBoard();
 
+            //For the 2 Dimension LogicalBoard
             for (int i = 0; i < board.GetLength(0); i++)
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    int logicSquare = board[i, j];
+                    int logicSquare = board[j, i];
                     ChessSquareControl graphicalSquare = GetChessControlFromIndex(i, j);
 
-                    if (logicSquare == LogicalBoard.IS_WHITE)
+                    if (logicSquare == (int) LogicalBoard.PawnState.White)
                         graphicalSquare.SetWhite();
-                    else if (logicSquare == LogicalBoard.IS_BLACK)
+                    else if (logicSquare == (int) LogicalBoard.PawnState.Black)
                         graphicalSquare.SetBlack();
                     else
                         graphicalSquare.setEmpty();

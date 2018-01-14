@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using static OthelloWPF.Models.LogicalBoard;
 
 namespace OthelloWPF.Models
 {
@@ -10,12 +12,17 @@ namespace OthelloWPF.Models
 
         LogicalBoard board;
 
+        //Just for a more readable code
+        int black = (int) LogicalBoard.PawnState.Black; 
+        int white = (int) LogicalBoard.PawnState.White;
+
         public bool WhiteTurn { get; set; }
 
         public Game(int size, Player player1, Player player2)
         {
-            this.whitePlayer = player1;
-            this.blackPlayer = player2;
+            //Init main classes
+            whitePlayer = player1;
+            blackPlayer = player2;
 
             board = new LogicalBoard(size);
 
@@ -23,10 +30,10 @@ namespace OthelloWPF.Models
             int[,] values = board.Values;
             int center = (int) values.GetLength(0) / 2 - 1;
 
-            board[center, center] = LogicalBoard.IS_BLACK;
-            board[center + 1, center + 1] = LogicalBoard.IS_BLACK;
-            board[center, center + 1] = LogicalBoard.IS_WHITE;
-            board[center + 1, center] = LogicalBoard.IS_WHITE;
+            board[center, center] = black;
+            board[center + 1, center + 1] = black;
+            board[center, center + 1] = white;
+            board[center + 1, center] = white;
 
             //White begin
             WhiteTurn = true;
@@ -53,9 +60,9 @@ namespace OthelloWPF.Models
         private int CalculateColor(bool isWhite)
         {
             if (isWhite)
-                return LogicalBoard.IS_WHITE;
+                return white;
             else
-                return LogicalBoard.IS_BLACK;
+                return black;
         }
 
         private void CalculateBoardConsequences(int column, int line, bool isWhite)
@@ -64,24 +71,35 @@ namespace OthelloWPF.Models
             int opponentColor = CalculateColor(!isWhite);
 
             List<Tuple<int, int>> listPawnToReturn = new List<Tuple<int, int>>();
+            List<Tuple<int, int>> eventuallyReturned = new List<Tuple<int, int>>();
 
             //Right from the clicked square
             for (int i = column+1; i < board.Values.GetLength(0); i++)
             {
-                List<Tuple<int, int>> eventuallyReturned = new List<Tuple<int, int>>();
-
                 //We count the pieces when they are in another color
                 if (board[i, line] == opponentColor)
                 {
                     eventuallyReturned.Add(Tuple.Create(i, line));
                 }
-                else if (board[i, line] == playerColor)//If it's the color and the list is empty, return, otherwise add eventuallyReturned to listPawnToReturn
+                else if (board[i, line] == playerColor)//If it's the color
                 {
-                    //if(eventuallyReturned.Any())
+                    if (eventuallyReturned.Any()) //Oponnent's pawns are between, add eventuallyReturned to listPawnToReturn
+                    {
+                        listPawnToReturn.AddRange(eventuallyReturned);
+                    }
+                    else //If list is empty, break
+                    {
+                        break;
+                    }
                 }
+                else if (board[i, line] == (int) PawnState.Empty)
+                    break;
             }
 
-            throw new NotImplementedException();
+            foreach (Tuple<int, int> pawnToReturn in listPawnToReturn)
+            {
+                board[pawnToReturn.Item1, pawnToReturn.Item2] = playerColor;
+            }
         }
 
         private void CalculateScore()
@@ -94,9 +112,9 @@ namespace OthelloWPF.Models
             {
                 for (int j = 0; j < logicalBoard.GetLength(1); j++)
                 {
-                    if (board[i, j] == LogicalBoard.IS_WHITE)
+                    if (board[i, j] == white)
                         whitePlayer.score++;
-                    else if (board[i, j] == LogicalBoard.IS_BLACK)
+                    else if (board[i, j] == black)
                         blackPlayer.score++;
                 }
             }
