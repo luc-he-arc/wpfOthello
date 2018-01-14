@@ -73,6 +73,7 @@ namespace OthelloWPF.Models
             List<Tuple<int, int>> listPawnToReturn = new List<Tuple<int, int>>();
 
             listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 1, 0));   //Right
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, -1, 0));   //False
 
             foreach (Tuple<int, int> pawnToReturn in listPawnToReturn)
             {
@@ -83,15 +84,17 @@ namespace OthelloWPF.Models
         private List<Tuple<int, int>> CheckDirection(int column, int line, int playerColor, int opponentColor, int incrementX, int incrementY)
         {
             List<Tuple<int, int>> eventuallyReturned = new List<Tuple<int, int>>();
+            int x = column + incrementX;
+            int y = line + incrementY;
 
-            for (int i = column + 1; i < board.Values.GetLength(0) || incrementX != 0; i += incrementX)
+            while(x > 0 && x < board.Values.GetLength(0))
             {
-                //We count the pieces when they are in another color
-                if (board[i, line] == opponentColor)
+                //We count the pieces when they are in opponent color
+                if (board[x, line] == opponentColor)
                 {
-                    eventuallyReturned.Add(Tuple.Create(i, line));
+                    eventuallyReturned.Add(Tuple.Create(x, line));
                 }
-                else if (board[i, line] == playerColor)//If it's the color
+                else if (board[x, line] == playerColor)//If it's the player color
                 {
                     if (eventuallyReturned.Any()) //Oponnent's pawns are between, add eventuallyReturned to listPawnToReturn
                     {
@@ -102,10 +105,15 @@ namespace OthelloWPF.Models
                         break;
                     }
                 }
-                else if (board[i, line] == (int)PawnState.Empty)
-                    if (eventuallyReturned.Any()) //If list is not empty, clear it
+                else if (board[x, line] == (int)PawnState.Empty)
+                {
+                    if (eventuallyReturned.Any()) //If list is not empty, clear it cause invalid
                         eventuallyReturned.Clear();
                     break;
+                }
+
+                //Next case
+                x += incrementX;
             }
 
             return eventuallyReturned;
