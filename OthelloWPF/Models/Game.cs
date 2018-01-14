@@ -71,10 +71,20 @@ namespace OthelloWPF.Models
             int opponentColor = CalculateColor(!isWhite);
 
             List<Tuple<int, int>> listPawnToReturn = new List<Tuple<int, int>>();
+
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 1, 0));   //Right
+
+            foreach (Tuple<int, int> pawnToReturn in listPawnToReturn)
+            {
+                board[pawnToReturn.Item1, pawnToReturn.Item2] = playerColor;
+            }
+        }
+
+        private List<Tuple<int, int>> CheckDirection(int column, int line, int playerColor, int opponentColor, int incrementX, int incrementY)
+        {
             List<Tuple<int, int>> eventuallyReturned = new List<Tuple<int, int>>();
 
-            //Right from the clicked square
-            for (int i = column+1; i < board.Values.GetLength(0); i++)
+            for (int i = column + 1; i < board.Values.GetLength(0) || incrementX != 0; i += incrementX)
             {
                 //We count the pieces when they are in another color
                 if (board[i, line] == opponentColor)
@@ -85,21 +95,20 @@ namespace OthelloWPF.Models
                 {
                     if (eventuallyReturned.Any()) //Oponnent's pawns are between, add eventuallyReturned to listPawnToReturn
                     {
-                        listPawnToReturn.AddRange(eventuallyReturned);
+                        return eventuallyReturned;
                     }
-                    else //If list is empty, break
+                    else //If list is empty, just break
                     {
                         break;
                     }
                 }
-                else if (board[i, line] == (int) PawnState.Empty)
+                else if (board[i, line] == (int)PawnState.Empty)
+                    if (eventuallyReturned.Any()) //If list is not empty, clear it
+                        eventuallyReturned.Clear();
                     break;
             }
 
-            foreach (Tuple<int, int> pawnToReturn in listPawnToReturn)
-            {
-                board[pawnToReturn.Item1, pawnToReturn.Item2] = playerColor;
-            }
+            return eventuallyReturned;
         }
 
         private void CalculateScore()
