@@ -72,8 +72,15 @@ namespace OthelloWPF.Models
 
             List<Tuple<int, int>> listPawnToReturn = new List<Tuple<int, int>>();
 
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 1, 0));   //Right
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, -1, 0));   //False
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 1, 0));      //Right
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, -1, 0));     //Left
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 0, 1));      //Up
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 0, -1));     //Down
+
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 1, 1));      //Right/Up
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, -1, -1));    //Left/Down
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 1, -1));     //Right/Down
+            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, -1, 1));     //Left/Up
 
             foreach (Tuple<int, int> pawnToReturn in listPawnToReturn)
             {
@@ -87,36 +94,43 @@ namespace OthelloWPF.Models
             int x = column + incrementX;
             int y = line + incrementY;
 
-            while(x > 0 && x < board.Values.GetLength(0))
+            bool valid = false;
+
+            while(x >= 0 && x < board.Values.GetLength(0) && y >= 0 && y < board.Values.GetLength(1))
             {
                 //We count the pieces when they are in opponent color
-                if (board[x, line] == opponentColor)
+                if (board[x, y] == opponentColor)
                 {
-                    eventuallyReturned.Add(Tuple.Create(x, line));
+                    eventuallyReturned.Add(Tuple.Create(x, y));
                 }
-                else if (board[x, line] == playerColor)//If it's the player color
+                else if (board[x, y] == playerColor)//If it's the player color
                 {
                     if (eventuallyReturned.Any()) //Oponnent's pawns are between, add eventuallyReturned to listPawnToReturn
                     {
-                        return eventuallyReturned;
+                        valid = true;
+                        break;
                     }
                     else //If list is empty, just break
                     {
                         break;
                     }
                 }
-                else if (board[x, line] == (int)PawnState.Empty)
+                else if (board[x, y] == (int)PawnState.Empty)
                 {
-                    if (eventuallyReturned.Any()) //If list is not empty, clear it cause invalid
-                        eventuallyReturned.Clear();
+                    if (eventuallyReturned.Any()) //If list is not empty, clear it because it's invalid
+                        eventuallyReturned.Clear();//May be useless now
                     break;
                 }
 
                 //Next case
                 x += incrementX;
+                y += incrementY;
             }
 
-            return eventuallyReturned;
+            if(valid)
+                return eventuallyReturned;
+            else
+                return Enumerable.Empty<Tuple<int, int>>().ToList<Tuple<int, int>>();
         }
 
         private void CalculateScore()
