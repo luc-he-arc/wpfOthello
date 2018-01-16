@@ -117,8 +117,8 @@ namespace OthelloWPF.Models
                 }
                 else if (board[x, y] == (int)PawnState.Empty)
                 {
-                    if (eventuallyReturned.Any()) //If list is not empty, clear it because it's invalid
-                        eventuallyReturned.Clear();//May be useless now
+                    if (eventuallyReturned.Any())   //If list is not empty, clear it because it's invalid
+                        eventuallyReturned.Clear(); //May be useless now
                     break;
                 }
 
