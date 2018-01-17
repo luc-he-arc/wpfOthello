@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls.Primitives;
+﻿using System.Windows.Controls.Primitives;
 
 namespace OthelloWPF.Models
 {
-    class GameController : IPlayable
+    class GameController
     {
         Game game;
         UniformGrid graphicalBoard;
@@ -18,56 +13,46 @@ namespace OthelloWPF.Models
             this.graphicalBoard = graphicalBoard;
         }
 
-        public bool WhoseTurn()
-        {
-            return game.WhiteTurn;
-        }
+        //*     Public     *//
 
-        //*      IPlayable      *//
-        public int[,] GetBoard()
+        public bool PlayMove(int column, int line)
         {
-            return game.getBoard();
-        }
+            bool isWhite = game.IsWhiteTurn;
 
-        public int GetBlackScore()
-        {
-            return game.getBlackScore();
-        }
-
-        public int GetWhiteScore()
-        {
-            return game.getWhiteScore();
-        }
-
-        public Tuple<int, int> GetNextMove(int[,] game, int level, bool whiteTurn)
-        {
-            //If AI
-            throw new NotImplementedException();
-        }
-
-        public bool IsPlayable(int column, int line, bool isWhite)
-        {
-            //TODO
-            //throw new NotImplementedException();
-            return true;
-        }
-
-        public bool PlayMove(int column, int line, bool isWhite)
-        {
-            if (IsPlayable(column, line, isWhite))
+            if (IsPlayable(column, line))  //Just a control. Maybe remove it
             {
-                game.PlayMove(column, line, isWhite);
+                game.PlayMove(column, line);
                 return true;
             }
 
             return false;
         }
 
-        /*  Unused here */
-
-        public string GetName()
+        public bool IsPlayable(int column, int line)
         {
-            throw new NotImplementedException();
+            return game.IsPlayable(column, line);
+        }
+
+        //*      Getters      *//
+
+        public int[,] GetBoard()
+        {
+            return game.GetBoard();
+        }
+
+        public int GetBlackScore()
+        {
+            return game.GetBlackScore();
+        }
+
+        public int GetWhiteScore()
+        {
+            return game.GetWhiteScore();
+        }
+
+        public bool WhoseTurn()
+        {
+            return game.IsWhiteTurn;
         }
     }
 }

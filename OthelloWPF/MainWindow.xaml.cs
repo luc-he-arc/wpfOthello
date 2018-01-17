@@ -1,20 +1,6 @@
 ﻿using OthelloWPF.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static OthelloWPF.Models.LogicalBoard;
 
 namespace OthelloWPF
 {
@@ -31,8 +17,7 @@ namespace OthelloWPF
             gameController = new GameController(game, graphicalBoard);
             
             //Graphics
-            InitializeComponent();
-                      
+            InitializeComponent();      
             InitBoard(size, size); 
         }
 
@@ -68,7 +53,7 @@ namespace OthelloWPF
             bool whiteTurn = gameController.WhoseTurn();
             ChessSquareControl square = (ChessSquareControl) sender;
 
-            bool update = gameController.PlayMove(square.x, square.y, whiteTurn);
+            bool update = gameController.PlayMove(square.x, square.y);
             if (update)
                 UpdateBoard();
         }
@@ -82,6 +67,7 @@ namespace OthelloWPF
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
+                    //Update board values
                     int logicSquare = board[j, i];
                     ChessSquareControl graphicalSquare = GetChessControlFromIndex(i, j);
 
@@ -91,6 +77,9 @@ namespace OthelloWPF
                         graphicalSquare.SetBlack();
                     else
                         graphicalSquare.setEmpty();
+
+                    //Check each cases if they are playable
+                    graphicalSquare.IsEnabled = gameController.IsPlayable(j, i);
                 }
             }
         }

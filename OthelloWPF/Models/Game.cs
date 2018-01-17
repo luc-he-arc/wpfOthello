@@ -12,11 +12,13 @@ namespace OthelloWPF.Models
 
         LogicalBoard board;
 
-        //Just for a more readable code
-        int black = (int) LogicalBoard.PawnState.Black; 
-        int white = (int) LogicalBoard.PawnState.White;
+        bool isWhiteTurn;
+        public bool IsWhiteTurn { get { return isWhiteTurn; } set { isWhiteTurn = value; } }
 
-        public bool WhiteTurn { get; set; }
+        //Just for a more readable code
+        int black = (int)LogicalBoard.PawnState.Black;
+        int white = (int)LogicalBoard.PawnState.White;
+        int empty = (int)LogicalBoard.PawnState.Empty;
 
         public Game(int size, Player player1, Player player2)
         {
@@ -24,7 +26,7 @@ namespace OthelloWPF.Models
             whitePlayer = player1;
             blackPlayer = player2;
 
-            board = new LogicalBoard(size);
+            board = new LogicalBoard();
 
             //Add center firsts pawns
             int[,] values = board.Values;
@@ -35,52 +37,36 @@ namespace OthelloWPF.Models
             board[center, center + 1] = white;
             board[center + 1, center] = white;
 
-            //White begin
-            WhiteTurn = true;
+            isWhiteTurn = true;                               //White begin
         }
 
-        public void PlayMove(int column, int line, bool isWhite)
+        public void PlayMove(int column, int line)
         {
-            //Find code associated
-            int playerColor = CalculateColor(isWhite);
+            board[column, line] = GetColorFromTurn(isWhiteTurn);//Add pawn
+            TurnPawns(column, line, isWhiteTurn);               //Turn needed pawns
 
-            //Add pawn
-            board[column, line] = playerColor;
-
-            //Calculate other pawns
-            CalculateBoardConsequences(column, line, isWhite);
-
-            //Calculate score
-            CalculateScore();
-
-            //Change turn
-            WhiteTurn = !isWhite;
+            UpdateScore();                                  //Update score from board
+            isWhiteTurn = !isWhiteTurn;                     //Change turn
         }
 
-        private int CalculateColor(bool isWhite)
-        {
-            if (isWhite)
-                return white;
-            else
-                return black;
-        }
+        //*      Game      *//
 
-        private void CalculateBoardConsequences(int column, int line, bool isWhite)
+        private void TurnPawns(int column, int line, bool isWhite)
         {
-            int playerColor = CalculateColor(isWhite);
-            int opponentColor = CalculateColor(!isWhite);
+            int playerColor = GetColorFromTurn(isWhite);
+            int opponentColor = GetColorFromTurn(!isWhite);
 
             List<Tuple<int, int>> listPawnToReturn = new List<Tuple<int, int>>();
 
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 1, 0));      //Right
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, -1, 0));     //Left
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 0, 1));      //Up
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 0, -1));     //Down
+            listPawnToReturn.AddRange(CheckPawnsInDirection(column, line, playerColor, opponentColor, 1, 0));      //Right
+            listPawnToReturn.AddRange(CheckPawnsInDirection(column, line, playerColor, opponentColor, -1, 0));     //Left
+            listPawnToReturn.AddRange(CheckPawnsInDirection(column, line, playerColor, opponentColor, 0, 1));      //Up
+            listPawnToReturn.AddRange(CheckPawnsInDirection(column, line, playerColor, opponentColor, 0, -1));     //Down
 
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 1, 1));      //Right/Up
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, -1, -1));    //Left/Down
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, 1, -1));     //Right/Down
-            listPawnToReturn.AddRange(CheckDirection(column, line, playerColor, opponentColor, -1, 1));     //Left/Up
+            listPawnToReturn.AddRange(CheckPawnsInDirection(column, line, playerColor, opponentColor, 1, 1));      //Right/Up
+            listPawnToReturn.AddRange(CheckPawnsInDirection(column, line, playerColor, opponentColor, -1, -1));    //Left/Down
+            listPawnToReturn.AddRange(CheckPawnsInDirection(column, line, playerColor, opponentColor, 1, -1));     //Right/Down
+            listPawnToReturn.AddRange(CheckPawnsInDirection(column, line, playerColor, opponentColor, -1, 1));     //Left/Up
 
             foreach (Tuple<int, int> pawnToReturn in listPawnToReturn)
             {
@@ -88,7 +74,7 @@ namespace OthelloWPF.Models
             }
         }
 
-        private List<Tuple<int, int>> CheckDirection(int column, int line, int playerColor, int opponentColor, int incrementX, int incrementY)
+        private List<Tuple<int, int>> CheckPawnsInDirection(int column, int line, int playerColor, int opponentColor, int incrementX, int incrementY)
         {
             List<Tuple<int, int>> eventuallyReturned = new List<Tuple<int, int>>();
             int x = column + incrementX;
@@ -133,10 +119,100 @@ namespace OthelloWPF.Models
                 return Enumerable.Empty<Tuple<int, int>>().ToList<Tuple<int, int>>();
         }
 
-        private void CalculateScore()
+        public List<Tuple<int, int>> GetPossibleMoves(bool isWhiteTurn)
         {
-            whitePlayer.score = 0;
-            blackPlayer.score = 0;
+            List<Tuple<int, int>> possibleMoves = new List<Tuple<int, int>>();
+
+            for (int i = 0; i < board.Values.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.Values.GetLength(1); j++)
+                {
+                    if (board[i, j] == empty)
+                    {
+                        if (IsPlayable(i, j))
+                            possibleMoves.Add(new Tuple<int, int>(i, j));
+                    }
+                }
+            }
+
+            return possibleMoves;
+        }
+
+        public bool IsPlayable(int column, int line)
+        {
+            int playerColor = GetColorFromTurn(isWhiteTurn);                        //Lisibilité + réutilisation
+            int opponentColor = GetColorFromTurn(!isWhiteTurn);
+
+            bool valid = false;
+
+            //Si une direction est valide, le coup est valide. On vérifie chacunes
+            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 0))      //Droite
+                valid = true;
+            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 0))     //Gauche
+                valid = true;
+            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, 1))      //Haut
+                valid = true;
+            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, -1))     //Bas
+                valid = true;
+
+            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 1))      //Droit/Haut
+                valid = true;
+            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, -1))    //Gauche/Bas
+                valid = true;
+            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, -1))     //Droite/Bas
+                valid = true;
+            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 1))     //Gauche/Haut
+                valid = true;
+
+            return valid;
+        }
+
+        private bool CheckPlayableInDirection(int column, int line, int playerColor, int opponentColor, int incrementX, int incrementY)
+        {
+            bool isPawnInBetween = false;
+            bool isValid = false;
+
+            //On va vérifier les cases suivantes à la notre dans la direction donnée
+            int x = column + incrementX;
+            int y = line + incrementY;
+
+
+            while (x >= 0 && x < board.Values.GetLength(0) && y >= 0 && y < board.Values.GetLength(1))
+            {
+                if (board[x, y] == opponentColor)       //Si c'est la couleur du joueur adverse
+                {
+                    isPawnInBetween = true;             //Il y a eventuellement une piece adverse entre celui qu'on vérifie et une autre du plateau
+                }
+                else if (board[x, y] == playerColor)    //Si c'est la couleur du joueur courant
+                {
+                    if (isPawnInBetween)                //Si il y a des pieces adverses entre celle joué et l'actuelle
+                    {
+                        isValid = true;                 //Le coup est jouable
+                        break;
+                    }
+                    else                                //La liste est vide. rien à retourner entre les 2 pièces
+                    {
+                        break;
+                    }
+                }
+                else if (board[x, y] == empty)          //Si c'est une case vide
+                {
+                    break;                              //Le coup est invalide
+                }
+
+                x += incrementX;                        //Case suivante
+                y += incrementY;
+            }
+
+            return isValid;
+        }
+
+        //*     Private     *//
+
+        private void UpdateScore()
+        {
+            whitePlayer.Score = 0;
+            blackPlayer.Score = 0;
 
             int[,] logicalBoard = board.Values;
             for (int i = 0; i < logicalBoard.GetLength(0); i++)
@@ -144,26 +220,36 @@ namespace OthelloWPF.Models
                 for (int j = 0; j < logicalBoard.GetLength(1); j++)
                 {
                     if (board[i, j] == white)
-                        whitePlayer.score++;
+                        whitePlayer.Score++;
                     else if (board[i, j] == black)
-                        blackPlayer.score++;
+                        blackPlayer.Score++;
                 }
             }
         }
 
-        internal int[,] getBoard()
+        private int GetColorFromTurn(bool isWhiteTurn)
+        {
+            if (isWhiteTurn)
+                return white;
+            else
+                return black;
+        }
+
+        //*      Getters      *//
+
+        public int[,] GetBoard()
         {
             return board.Values;
         }
 
-        internal int getWhiteScore()
+        public int GetWhiteScore()
         {
-            return whitePlayer.score;
+            return whitePlayer.Score;
         }
 
-        internal int getBlackScore()
+        public int GetBlackScore()
         {
-            return blackPlayer.score;
+            return blackPlayer.Score;
         }
     }
 }

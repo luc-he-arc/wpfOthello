@@ -8,12 +8,16 @@ namespace OthelloWPF.Models
 {
     class Player
     {
-        public string name { get; set; }
-        public int score { get; set; }
+        private string name;
+        public string Name { get { return name; } set { name = value; } }
 
-        public Player()
+        private int score;
+        public int Score { get { return score; } set { score = value; } }
+
+
+        public Player(string name = "Mystery player")
         {
-            name = "Paul";
+            this.name = name;
             score = 0;
         }
     }

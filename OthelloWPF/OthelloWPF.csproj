@@ -54,8 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IPlayable.cs" />
-    <Compile Include="Models\Board.cs" />
+    <Compile Include="Models\LogicalBoard.cs" />
     <Compile Include="Models\GameController.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\HumanPlayer.cs" />
