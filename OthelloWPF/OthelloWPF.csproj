@@ -111,5 +111,14 @@
     <Resource Include="Images\black.png" />
     <Resource Include="Images\white.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\background1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\othello_link.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\othello_masque.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

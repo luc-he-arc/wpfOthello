@@ -8,8 +8,9 @@
              d:DesignHeight="300" d:DesignWidth="300" Width="100" Height="100">
 
     <Grid>
-        <Border Background="Black" BorderThickness="1">
-            <Button Background="#FFFFF19B"></Button>
+        <Border Background="Transparent" Opacity="1">
+            <Button Background="Transparent" Opacity="1"></Button> 
+            <!--<Button Background="#b5e73d"></Button>-->
         </Border>
         <Image Name="Image"></Image>
     </Grid>

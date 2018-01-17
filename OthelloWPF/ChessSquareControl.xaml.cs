@@ -28,12 +28,12 @@ namespace OthelloWPF
 
         public void SetBlack()
         {
-            Image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/black.png", UriKind.Relative));
+            Image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/othello_masque.png", UriKind.Relative));
         }
 
         public void SetWhite()
         {
-            Image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/white.png", UriKind.Relative));
+            Image.Source = new BitmapImage(new Uri(@"/OthelloWPF;component/Images/othello_link.png", UriKind.Relative));
         }
 
         internal void setEmpty()
