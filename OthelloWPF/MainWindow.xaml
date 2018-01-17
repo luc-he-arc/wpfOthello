@@ -18,7 +18,11 @@
     <!--https://stackoverflow.com/questions/8121906/resize-wpf-window-and-contents-depening-on-screen-resolution-->
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <Label Content="Joueur 1" VerticalAlignment="Top" FontWeight="Bold" FontSize="15" HorizontalAlignment="Left" MinWidth="71"/>
+        <StackPanel Orientation="Vertical">
+            <Label Name="namePlayer1" Content="JOUEUR 1" VerticalAlignment="Top" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Foreground="#FF4F0707" Margin="0,30,0,10"/>
+            <Label Name="ScoreJ1" Content="Score" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Foreground="#FF4F0707"/>
+            <Label Content="0" VerticalAlignment="Center" FontWeight="Bold" FontSize="25" HorizontalAlignment="Center" Foreground="#FF4F0707"/>
+        </StackPanel>
         <UniformGrid Name="Board" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="400" MinHeight="400" Background="Transparent" Margin="50,20" >
             <local:ChessSquareControl Width="Auto" Height="Auto"/>
             <local:ChessSquareControl Width="Auto" Height="Auto"/>
@@ -46,6 +50,10 @@
             <local:ChessSquareControl Width="Auto" Height="Auto"/>
             <local:ChessSquareControl Width="Auto" Height="Auto"/>
         </UniformGrid>
-        <Label Content="Joueur 2" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="15" FontWeight="Bold" MinWidth="71" />
+        <StackPanel Orientation="Vertical">
+            <Label Name="namePlayer2" Content="JOUEUR 2" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="#FF4F0707" Margin="0,30,0,10" />
+            <Label Name="scoreJ2" Content="Score" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Foreground="#FF4F0707"/>
+            <Label Content="0" VerticalAlignment="Center" FontWeight="Bold" FontSize="25" HorizontalAlignment="Center" Foreground="#FF4F0707"/>
+        </StackPanel>
     </StackPanel>
 </Window>
