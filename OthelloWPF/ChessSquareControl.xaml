@@ -6,12 +6,15 @@
              xmlns:local="clr-namespace:OthelloWPF"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Width="100" Height="100">
-
     <Grid>
         <Border Background="Transparent" Opacity="1">
-            <Button Background="Transparent" Opacity="1"></Button> 
-            <!--<Button Background="#b5e73d"></Button>-->
+            <Button Background="Transparent" Opacity="1" BorderBrush="Black"></Button>
         </Border>
         <Image Name="Image"></Image>
+        <!--
+        <Button Background="Transparent" Opacity="1" BorderBrush="Black">
+            <Image Name="Image"></Image>
+        </Button>
+        -->
     </Grid>
 </UserControl>

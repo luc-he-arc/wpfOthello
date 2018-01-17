@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:OthelloWPF"
         mc:Ignorable="d"
         Title="Othello Zelda"
-        MinHeight="750"
-        MinWidth="1100"
-        Height="800"
+        MinHeight="880"
+        MinWidth="1200"
+        Height="880"
         Width="1200"
         WindowStartupLocation="CenterScreen"
         >
     <Window.Background>
-        <ImageBrush ImageSource="Images/background1.jpg" />
+        <ImageBrush ImageSource="Images/background1.jpg"/>
     </Window.Background>
     <!--https://stackoverflow.com/questions/8121906/resize-wpf-window-and-contents-depening-on-screen-resolution-->
 
