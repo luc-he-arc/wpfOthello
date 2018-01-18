@@ -16,6 +16,6 @@
         <Label Name="titleMenuWindows" Content="Othello Zelda" VerticalAlignment="Top" FontSize="26" HorizontalAlignment="Center" Foreground="#FF4F0707" Margin="0,25,0,15" FontFamily="Viner Hand ITC" FontWeight="Bold"/>
         <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,30,0,15" FontWeight="Bold" Click="OpenMainWindow">Commencer</Button>
         <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,20,0,15" FontWeight="Bold">Reprendre</Button>
-        <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,20,0,15" FontWeight="Bold">Quitter</Button>
+        <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,20,0,15" FontWeight="Bold" Click="ExitApplication">Quitter</Button>
     </StackPanel>
 </Window>

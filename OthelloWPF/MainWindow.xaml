@@ -22,9 +22,9 @@
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
         <StackPanel Orientation="Vertical">
             <Label Name="namePlayer1" Content="JOUEUR 1" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" HorizontalAlignment="Center" Foreground="#FF4F0707" FontFamily="Viner Hand ITC" Margin="0,30,0,10"/>
-            <Label Name="ScoreJ1" Content="Score" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" HorizontalAlignment="Center" Foreground="#FF4F0707" FontFamily="Viner Hand ITC"/>
-            <Label Content="{Binding ScoreWhite}" VerticalAlignment="Center" FontWeight="Bold" FontSize="28" HorizontalAlignment="Center" Foreground="#FF4F0707" FontFamily="Viner Hand ITC"/>
-            <Image Name="whiteTurn" Source="Images/sword.png" Width="50"/>
+            <Label Name="ScoreJ1" Content="Score" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" HorizontalAlignment="Center" Foreground="#FF4F0707" FontFamily="Viner Hand ITC" Margin="0,10,0,0"/>
+            <Label Content="{Binding ScoreWhite}" VerticalAlignment="Center" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" Foreground="#FF4F0707" FontFamily="Viner Hand ITC" Margin="0,0,0,10"/>
+            <Image Name="whiteTurn" Source="Images/sword.png" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,10"/>
         </StackPanel>
         <UniformGrid Name="Board" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="400" MinHeight="400" Background="Transparent" Margin="50,20" >
             <local:ChessSquareControl Width="Auto" Height="Auto"/>
@@ -55,9 +55,12 @@
         </UniformGrid>
         <StackPanel Orientation="Vertical">
             <Label Name="namePlayer2" Content="JOUEUR 2" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold" Foreground="#FF4F0707" FontFamily="Viner Hand ITC" Margin="0,30,0,10" />
-            <Label Name="scoreJ2" Content="Score" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" HorizontalAlignment="Center" Foreground="#FF4F0707" FontFamily="Viner Hand ITC"/>
-            <Label Content="{Binding ScoreBlack}" VerticalAlignment="Center" FontWeight="Bold" FontSize="28" HorizontalAlignment="Center" Foreground="#FF4F0707" FontFamily="Viner Hand ITC"/>
-            <Image Name="blackTurn" Source="Images/sword.png" Width="50" Visibility="Hidden"/>
+            <Label Name="scoreJ2" Content="Score" VerticalAlignment="Center" FontWeight="Bold" FontSize="22" HorizontalAlignment="Center" Foreground="#FF4F0707" FontFamily="Viner Hand ITC" Margin="0,10,0,0"/>
+            <Label Content="{Binding ScoreBlack}" VerticalAlignment="Center" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" Foreground="#FF4F0707" FontFamily="Viner Hand ITC" Margin="0,0,0,10"/>
+            <Image Name="blackTurn" Source="Images/sword.png" Width="50" Visibility="Hidden" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,10"/>
+           <!-- 
+            <Button Height="40" Width="100" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" FontWeight="Bold" >Quitter</Button>
+             -->
         </StackPanel>
     </StackPanel>
 </Window>
