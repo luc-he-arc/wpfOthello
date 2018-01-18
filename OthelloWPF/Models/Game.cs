@@ -42,15 +42,27 @@ namespace OthelloWPF.Models
 
         public void PlayMove(int column, int line)
         {
-            if (GetPossibleMoves(isWhiteTurn).Count > 0)
+            board[column, line] = GetColorFromTurn(isWhiteTurn);//Add pawn
+            TurnPawns(column, line, isWhiteTurn);               //Turn needed pawns
+
+            UpdateScore();                                      //Update score from board
+
+            if (GetPossibleMoves(!isWhiteTurn).Count > 0)       //Does next player can play?
             {
-                board[column, line] = GetColorFromTurn(isWhiteTurn);//Add pawn
-                TurnPawns(column, line, isWhiteTurn);               //Turn needed pawns
-
-                UpdateScore();                                      //Update score from board
+                isWhiteTurn = !isWhiteTurn;                     //Change turn
             }
+            else
+            {
+                Console.WriteLine((!isWhiteTurn ? "Blanc" : "Noir") + " Passe son tour");
 
-            isWhiteTurn = !isWhiteTurn;                     //Change turn
+                //Check if this player can move after
+                if (GetPossibleMoves(isWhiteTurn).Count <= 0)
+                {
+                    Console.WriteLine((isWhiteTurn ? "Blanc" : "Noir") + " Passe son tour");
+                    Console.WriteLine("Fin de la partie");
+                }
+            }
+            
         }
 
         //*      Game      *//
@@ -131,11 +143,8 @@ namespace OthelloWPF.Models
             {
                 for (int j = 0; j < board.Values.GetLength(1); j++)
                 {
-                    //if (board[i, j] == empty)
-                    //{
-                        if (IsPlayable(i, j))
-                            possibleMoves.Add(new Tuple<int, int>(i, j));
-                    //}
+                    if (IsPlayable(i, j))
+                        possibleMoves.Add(new Tuple<int, int>(i, j));
                 }
             }
 
@@ -154,22 +163,22 @@ namespace OthelloWPF.Models
 
 
                 //Si une direction est valide, le coup est valide. On vérifie chacunes
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 0))      //Droite
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 0))      //Right
                     valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 0))     //Gauche
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 0))     //Left
                     valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, 1))      //Haut
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, 1))      //Up
                     valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, -1))     //Bas
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, -1))     //Down
                     valid = true;
 
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 1))      //Droit/Haut
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 1))      //Right/Up
                     valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, -1))    //Gauche/Bas
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, -1))    //Left/Down
                     valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, -1))     //Droite/Bas
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, -1))     //Right/Down
                     valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 1))     //Gauche/Haut
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 1))     //Left/Up
                     valid = true;
             }
 
