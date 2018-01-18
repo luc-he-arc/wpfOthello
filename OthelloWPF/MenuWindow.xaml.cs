@@ -26,11 +26,15 @@ namespace OthelloWPF
 
         private void OpenMainWindow(object sender, RoutedEventArgs e)
         {
-           
                 MainWindow mainW = new MainWindow();
                 mainW.Show();
                 this.Close();
             
+        }
+
+        private void ExitApplication(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
         }
     }
 }
