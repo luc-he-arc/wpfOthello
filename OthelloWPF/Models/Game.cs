@@ -49,13 +49,13 @@ namespace OthelloWPF.Models
 
             UpdateScore();                                      //Update score from board
 
-            //isWhiteTurn = !isWhiteTurn;                     //Change turn
+            //isWhiteTurn = !isWhiteTurn;                       //Change turn
 
             if (GetPossibleMoves(!isWhiteTurn).Count > 0)       //Does next player can play?
             {
                 isWhiteTurn = !isWhiteTurn;                     //Change turn
             }
-            /*else
+            else
             {
                 Console.WriteLine((!isWhiteTurn ? "Blanc" : "Noir") + " Passe son tour");
 
@@ -65,7 +65,7 @@ namespace OthelloWPF.Models
                     Console.WriteLine((isWhiteTurn ? "Blanc" : "Noir") + " Passe son tour");
                     Console.WriteLine("Fin de la partie");
                 }
-            }*/
+            }
 
         }
 
@@ -147,7 +147,7 @@ namespace OthelloWPF.Models
             {
                 for (int j = 0; j < board.Values.GetLength(1); j++)
                 {
-                    if (IsPlayable(i, j))
+                    if (IsPlayable(i, j, isWhiteTurn))
                         possibleMoves.Add(new Tuple<int, int>(i, j));
                 }
             }
@@ -155,16 +155,14 @@ namespace OthelloWPF.Models
             return possibleMoves;
         }
 
-        public bool IsPlayable(int column, int line)
+        public bool IsPlayable(int column, int line, bool isWhite)
         {
             bool valid = false;
 
             if (board[column, line] == empty)
             {
-                int playerColor = GetColorFromTurn(isWhiteTurn);                        //Lisibilité + réutilisation
-                int opponentColor = GetColorFromTurn(!isWhiteTurn);
-
-
+                int playerColor = GetColorFromTurn(isWhite);                        //Lisibilité + réutilisation
+                int opponentColor = GetColorFromTurn(!isWhite);
 
                 //Si une direction est valide, le coup est valide. On vérifie chacunes
                 if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 0))      //Right

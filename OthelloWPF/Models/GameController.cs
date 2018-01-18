@@ -17,20 +17,20 @@ namespace OthelloWPF.Models
 
         public bool PlayMove(int column, int line)
         {
-            bool isWhite = game.IsWhiteTurn;
+            //bool isWhite = game.IsWhiteTurn;
 
-            if (IsPlayable(column, line))  //Just a control. Maybe remove it
-            {
-                game.PlayMove(column, line);
-                return true;
-            }
+            //if (IsPlayable(column, line))  //Just a control. Maybe remove it
+            //{
+            game.PlayMove(column, line);
+                //return true;
+            //}
 
-            return false;
+            return true;
         }
 
         public bool IsPlayable(int column, int line)
         {
-            return game.IsPlayable(column, line);
+            return game.IsPlayable(column, line, game.IsWhiteTurn);
         }
 
         //*      Getters      *//
