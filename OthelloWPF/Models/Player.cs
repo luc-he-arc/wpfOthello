@@ -14,7 +14,6 @@ namespace OthelloWPF.Models
         private int score;
         public int Score { get { return score; } set { score = value; } }
 
-
         public Player(string name = "Mystery player")
         {
             this.name = name;

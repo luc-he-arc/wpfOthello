@@ -42,10 +42,14 @@ namespace OthelloWPF.Models
 
         public void PlayMove(int column, int line)
         {
-            board[column, line] = GetColorFromTurn(isWhiteTurn);//Add pawn
-            TurnPawns(column, line, isWhiteTurn);               //Turn needed pawns
+            if (GetPossibleMoves(isWhiteTurn).Count > 0)
+            {
+                board[column, line] = GetColorFromTurn(isWhiteTurn);//Add pawn
+                TurnPawns(column, line, isWhiteTurn);               //Turn needed pawns
 
-            UpdateScore();                                  //Update score from board
+                UpdateScore();                                      //Update score from board
+            }
+
             isWhiteTurn = !isWhiteTurn;                     //Change turn
         }
 
@@ -127,11 +131,11 @@ namespace OthelloWPF.Models
             {
                 for (int j = 0; j < board.Values.GetLength(1); j++)
                 {
-                    if (board[i, j] == empty)
-                    {
+                    //if (board[i, j] == empty)
+                    //{
                         if (IsPlayable(i, j))
                             possibleMoves.Add(new Tuple<int, int>(i, j));
-                    }
+                    //}
                 }
             }
 
@@ -140,29 +144,34 @@ namespace OthelloWPF.Models
 
         public bool IsPlayable(int column, int line)
         {
-            int playerColor = GetColorFromTurn(isWhiteTurn);                        //Lisibilité + réutilisation
-            int opponentColor = GetColorFromTurn(!isWhiteTurn);
-
             bool valid = false;
 
-            //Si une direction est valide, le coup est valide. On vérifie chacunes
-            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 0))      //Droite
-                valid = true;
-            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 0))     //Gauche
-                valid = true;
-            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, 1))      //Haut
-                valid = true;
-            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, -1))     //Bas
-                valid = true;
+            if (board[column, line] == empty)
+            {
+                int playerColor = GetColorFromTurn(isWhiteTurn);                        //Lisibilité + réutilisation
+                int opponentColor = GetColorFromTurn(!isWhiteTurn);
 
-            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 1))      //Droit/Haut
-                valid = true;
-            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, -1))    //Gauche/Bas
-                valid = true;
-            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, -1))     //Droite/Bas
-                valid = true;
-            if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 1))     //Gauche/Haut
-                valid = true;
+
+
+                //Si une direction est valide, le coup est valide. On vérifie chacunes
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 0))      //Droite
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 0))     //Gauche
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, 1))      //Haut
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, -1))     //Bas
+                    valid = true;
+
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 1))      //Droit/Haut
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, -1))    //Gauche/Bas
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, -1))     //Droite/Bas
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 1))     //Gauche/Haut
+                    valid = true;
+            }
 
             return valid;
         }

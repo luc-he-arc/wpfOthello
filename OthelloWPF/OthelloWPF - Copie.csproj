@@ -54,10 +54,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+<<<<<<< HEAD
     <Compile Include="Models\LogicalBoard.cs" />
+=======
+    <Compile Include="IPlayable.cs" />
     <Compile Include="MenuWindow.xaml.cs">
       <DependentUpon>MenuWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Board.cs" />
+>>>>>>> 244c4caf923fce9a887250c0ce0a745ed38019bd
     <Compile Include="Models\GameController.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\HumanPlayer.cs" />
