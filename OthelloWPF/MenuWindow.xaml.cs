@@ -23,5 +23,14 @@ namespace OthelloWPF
         {
             InitializeComponent();
         }
+
+        private void OpenMainWindow(object sender, RoutedEventArgs e)
+        {
+           
+                MainWindow mainW = new MainWindow();
+                mainW.Show();
+                this.Close();
+            
+        }
     }
 }
