@@ -1,24 +1,71 @@
 ﻿using OthelloWPF.Models;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System;
+using System.Windows.Data;
 
 namespace OthelloWPF
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         GameController gameController;
         UniformGrid graphicalBoard;
 
+
+        ///**       Bindings        **//
+        private int scoreWhite = 0;
+        public int ScoreWhite {
+            get
+            {
+                return scoreWhite;
+            }
+            set
+            {
+                scoreWhite = value;
+                OnPropertyChanged("ScoreWhite");
+                
+            }
+        }
+
+        private int scoreBlack = 0;
+        public int ScoreBlack
+        {
+            get
+            {
+                return scoreBlack;
+            }
+            set
+            {
+                scoreBlack = value;
+                OnPropertyChanged("ScoreBlack");
+
+            }
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        //**        Main        **//
+
         public MainWindow()
-        {   
+        {
             //Logics
             int size = 8;
             Game game = new Game(size, new HumanPlayer(), new HumanPlayer());
             gameController = new GameController(game, graphicalBoard);
             
             //Graphics
-            InitializeComponent();      
-            InitBoard(size, size); 
+            InitializeComponent();
+
+            InitBoard(size, size);
+
+            ScoreWhite = game.GetWhiteScore();
+            ScoreBlack = game.GetBlackScore();
         }
 
         private void InitBoard(int column, int line)
@@ -45,20 +92,23 @@ namespace OthelloWPF
                 }
             }
 
-            UpdateBoard();
+            UpdateBoard(true);
+
+            //Show player turn
         }
 
         private void OnBoardClick(object sender, RoutedEventArgs e)
         {
-            bool whiteTurn = gameController.WhoseTurn();
             ChessSquareControl square = (ChessSquareControl) sender;
 
             bool update = gameController.PlayMove(square.x, square.y);
-            if (update)
-                UpdateBoard();
+            UpdateBoard(update);
+
+            ScoreWhite = gameController.GetWhiteScore();
+            ScoreBlack = gameController.GetBlackScore();
         }
 
-        private void UpdateBoard()
+        private void UpdateBoard(bool update)
         {
             int[,] board = gameController.GetBoard();
 
@@ -67,16 +117,19 @@ namespace OthelloWPF
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    //Update board values
                     int logicSquare = board[j, i];
                     ChessSquareControl graphicalSquare = GetChessControlFromIndex(i, j);
 
-                    if (logicSquare == (int) LogicalBoard.PawnState.White)
-                        graphicalSquare.SetWhite();
-                    else if (logicSquare == (int) LogicalBoard.PawnState.Black)
-                        graphicalSquare.SetBlack();
-                    else
-                        graphicalSquare.setEmpty();
+                    if (update) //If there is changes in the logical board
+                    {
+                        //Update board values
+                        if (logicSquare == (int)LogicalBoard.PawnState.White)
+                            graphicalSquare.SetWhite();
+                        else if (logicSquare == (int)LogicalBoard.PawnState.Black)
+                            graphicalSquare.SetBlack();
+                        else
+                            graphicalSquare.setEmpty();
+                    }
 
                     //Check each cases if they are playable
                     graphicalSquare.IsEnabled = gameController.IsPlayable(j, i);

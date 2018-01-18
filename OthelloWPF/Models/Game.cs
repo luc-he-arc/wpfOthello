@@ -37,6 +37,8 @@ namespace OthelloWPF.Models
             board[center, center + 1] = white;
             board[center + 1, center] = white;
 
+            UpdateScore();
+
             isWhiteTurn = true;                               //White begin
         }
 
@@ -47,11 +49,13 @@ namespace OthelloWPF.Models
 
             UpdateScore();                                      //Update score from board
 
+            //isWhiteTurn = !isWhiteTurn;                     //Change turn
+
             if (GetPossibleMoves(!isWhiteTurn).Count > 0)       //Does next player can play?
             {
                 isWhiteTurn = !isWhiteTurn;                     //Change turn
             }
-            else
+            /*else
             {
                 Console.WriteLine((!isWhiteTurn ? "Blanc" : "Noir") + " Passe son tour");
 
@@ -61,8 +65,8 @@ namespace OthelloWPF.Models
                     Console.WriteLine((isWhiteTurn ? "Blanc" : "Noir") + " Passe son tour");
                     Console.WriteLine("Fin de la partie");
                 }
-            }
-            
+            }*/
+
         }
 
         //*      Game      *//
