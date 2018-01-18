@@ -50,7 +50,7 @@ namespace OthelloWPF.Models
             return game.GetWhiteScore();
         }
 
-        public bool WhoseTurn()
+        public bool isWhiteTurn()
         {
             return game.IsWhiteTurn;
         }

@@ -106,6 +106,17 @@ namespace OthelloWPF
 
             ScoreWhite = gameController.GetWhiteScore();
             ScoreBlack = gameController.GetBlackScore();
+
+            if (gameController.isWhiteTurn())
+            {
+                whiteTurn.Visibility = Visibility.Visible;
+                blackTurn.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                whiteTurn.Visibility = Visibility.Hidden;
+                blackTurn.Visibility = Visibility.Visible;
+            }
         }
 
         private void UpdateBoard(bool update)
