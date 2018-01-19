@@ -42,14 +42,12 @@ namespace OthelloWPF.Models
             isWhiteTurn = true;                               //White begin
         }
 
-        public void PlayMove(int column, int line)
+        public bool PlayMove(int column, int line)
         {
             board[column, line] = GetColorFromTurn(isWhiteTurn);//Add pawn
             TurnPawns(column, line, isWhiteTurn);               //Turn needed pawns
 
             UpdateScore();                                      //Update score from board
-
-            //isWhiteTurn = !isWhiteTurn;                       //Change turn
 
             if (GetPossibleMoves(!isWhiteTurn).Count > 0)       //Does next player can play?
             {
@@ -64,9 +62,12 @@ namespace OthelloWPF.Models
                 {
                     Console.WriteLine((isWhiteTurn ? "Blanc" : "Noir") + " Passe son tour");
                     Console.WriteLine("Fin de la partie");
+
+                    return false;
                 }
             }
 
+            return true;
         }
 
         //*      Game      *//
@@ -139,7 +140,7 @@ namespace OthelloWPF.Models
                 return Enumerable.Empty<Tuple<int, int>>().ToList<Tuple<int, int>>();
         }
 
-        public List<Tuple<int, int>> GetPossibleMoves(bool isWhiteTurn)
+        private List<Tuple<int, int>> GetPossibleMoves(bool isWhiteTurn)
         {
             List<Tuple<int, int>> possibleMoves = new List<Tuple<int, int>>();
 

@@ -2,8 +2,6 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System;
-using System.Windows.Data;
 
 namespace OthelloWPF
 {
@@ -57,7 +55,7 @@ namespace OthelloWPF
 
             //Logics
             int size = 8;
-            Game game = new Game(size, new HumanPlayer(), new HumanPlayer());
+            Game game = new Game(size, new Player(), new Player());
             gameController = new GameController(game, graphicalBoard);
             
             //Graphics
@@ -94,7 +92,7 @@ namespace OthelloWPF
                 }
             }
 
-            UpdateBoard(true);
+            UpdateBoard();
 
             //Show player turn
         }
@@ -103,13 +101,13 @@ namespace OthelloWPF
         {
             ChessSquareControl square = (ChessSquareControl) sender;
 
-            bool update = gameController.PlayMove(square.x, square.y);
-            UpdateBoard(update);
+            bool gameContinue = gameController.PlayMove(square.x, square.y);
+            UpdateBoard();
 
             ScoreWhite = gameController.GetWhiteScore();
             ScoreBlack = gameController.GetBlackScore();
 
-            if (gameController.isWhiteTurn())
+            if (gameController.IsWhiteTurn())
             {
                 whiteTurn.Visibility = Visibility.Visible;
                 blackTurn.Visibility = Visibility.Hidden;
@@ -119,9 +117,16 @@ namespace OthelloWPF
                 whiteTurn.Visibility = Visibility.Hidden;
                 blackTurn.Visibility = Visibility.Visible;
             }
+
+            if (!gameContinue)
+            {
+                MenuWindow menu = new MenuWindow();
+                menu.Show();
+                this.Close();
+            }
         }
 
-        private void UpdateBoard(bool update)
+        private void UpdateBoard()
         {
             int[,] board = gameController.GetBoard();
 
@@ -133,16 +138,13 @@ namespace OthelloWPF
                     int logicSquare = board[j, i];
                     ChessSquareControl graphicalSquare = GetChessControlFromIndex(i, j);
 
-                    if (update) //If there is changes in the logical board
-                    {
-                        //Update board values
-                        if (logicSquare == (int)LogicalBoard.PawnState.White)
-                            graphicalSquare.SetWhite();
-                        else if (logicSquare == (int)LogicalBoard.PawnState.Black)
-                            graphicalSquare.SetBlack();
-                        else
-                            graphicalSquare.setEmpty();
-                    }
+                    //Update board values
+                    if (logicSquare == (int)LogicalBoard.PawnState.White)
+                        graphicalSquare.SetWhite();
+                    else if (logicSquare == (int)LogicalBoard.PawnState.Black)
+                        graphicalSquare.SetBlack();
+                    else
+                        graphicalSquare.setEmpty();
 
                     //Check each cases if they are playable
                     graphicalSquare.IsEnabled = gameController.IsPlayable(j, i);

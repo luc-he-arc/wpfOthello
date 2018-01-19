@@ -60,9 +60,8 @@
     </Compile>
     <Compile Include="Models\GameController.cs" />
     <Compile Include="Models\Game.cs" />
-    <Compile Include="Models\HumanPlayer.cs" />
-    <Compile Include="Models\AIPlayer.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Tools.cs" />
     <Page Include="ChessSquareControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
