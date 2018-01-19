@@ -17,15 +17,7 @@ namespace OthelloWPF.Models
 
         public bool PlayMove(int column, int line)
         {
-            //bool isWhite = game.IsWhiteTurn;
-
-            //if (IsPlayable(column, line))  //Just a control. Maybe remove it
-            //{
-            game.PlayMove(column, line);
-                //return true;
-            //}
-
-            return true;
+            return game.PlayMove(column, line);
         }
 
         public bool IsPlayable(int column, int line)
@@ -50,9 +42,21 @@ namespace OthelloWPF.Models
             return game.GetWhiteScore();
         }
 
-        public bool isWhiteTurn()
+        public bool IsWhiteTurn()
         {
             return game.IsWhiteTurn;
+        }
+
+        //*     Saving      *//
+
+        public void SaveGame(string fileName)
+        {
+            Tools.SerializeObject(game, fileName);
+        }
+
+        public void LoadGame(string path)
+        {
+            game = Tools.DeSerializeObject<Game>(path);
         }
     }
 }
