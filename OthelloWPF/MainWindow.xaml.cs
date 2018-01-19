@@ -54,6 +54,7 @@ namespace OthelloWPF
 
         public MainWindow()
         {
+
             //Logics
             int size = 8;
             Game game = new Game(size, new HumanPlayer(), new HumanPlayer());
@@ -61,9 +62,10 @@ namespace OthelloWPF
             
             //Graphics
             InitializeComponent();
-
+            double temp = this.Height - 400;
+            ExitButtonMainWindow.Margin = new Thickness(0,temp, 0, 0);
             InitBoard(size, size);
-
+            
             ScoreWhite = game.GetWhiteScore();
             ScoreBlack = game.GetBlackScore();
         }
