@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OthelloWPF.Models
 {
-    class LogicalBoard
+    public class LogicalBoard
     {
         private int[,] values;
         public int[,] Values => values;
@@ -27,7 +27,7 @@ namespace OthelloWPF.Models
             }
         }
 
-        public void updateBoard(int[,] newValues)
+        public void UpdateBoard(int[,] newValues)
         {
             for (int i = 0; i < values.GetLength(0); i++)
             {

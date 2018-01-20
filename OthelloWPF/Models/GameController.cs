@@ -1,10 +1,12 @@
-﻿using System.Windows.Controls.Primitives;
+﻿using System;
+using System.Windows.Controls.Primitives;
 
 namespace OthelloWPF.Models
 {
     class GameController
     {
         Game game;
+        public Game Game { get { return game; } }
         UniformGrid graphicalBoard;
 
         public GameController(Game game, UniformGrid graphicalBoard)
@@ -51,12 +53,7 @@ namespace OthelloWPF.Models
 
         public void SaveGame(string fileName)
         {
-            Tools.SerializeObject(game, fileName);
-        }
-
-        public void LoadGame(string path)
-        {
-            game = Tools.DeSerializeObject<Game>(path);
+            
         }
     }
 }

@@ -1,24 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using static OthelloWPF.Models.LogicalBoard;
 
 namespace OthelloWPF.Models
 {
-    class Game
+    public class Game // : ISerializable
     {
         Player whitePlayer;
+        public Player WhitePlayer { get {return whitePlayer;} set { whitePlayer = value; } }
+
         Player blackPlayer;
+        public Player BlackPlayer { get { return blackPlayer; } set { blackPlayer = value; } }
 
         LogicalBoard board;
+        public LogicalBoard Board { get { return board; } set { board = value; } }
 
         bool isWhiteTurn;
         public bool IsWhiteTurn { get { return isWhiteTurn; } set { isWhiteTurn = value; } }
 
         //Just for a more readable code
-        int black = (int)LogicalBoard.PawnState.Black;
-        int white = (int)LogicalBoard.PawnState.White;
-        int empty = (int)LogicalBoard.PawnState.Empty;
+        int black = (int) LogicalBoard.PawnState.Black;
+        int white = (int) LogicalBoard.PawnState.White;
+        int empty = (int) LogicalBoard.PawnState.Empty;
+
+        //**     Serialization       **/
+
+        public Game() : this(8, new Player(), new Player())
+        {
+            //Empty
+        } 
+
+        /*public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("whitePlayer", whitePlayer);
+            info.AddValue("blackPlayer", blackPlayer);
+            info.AddValue("board", board);
+            info.AddValue("isWhiteTurn", isWhiteTurn);
+        }*/
+
+        //**     Main     **/
 
         public Game(int size, Player player1, Player player2)
         {
@@ -39,7 +61,7 @@ namespace OthelloWPF.Models
 
             UpdateScore();
 
-            isWhiteTurn = true;                               //White begin
+            isWhiteTurn = false;                               //Black begin
         }
 
         public bool PlayMove(int column, int line)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,10 +27,9 @@ namespace OthelloWPF
 
         private void OpenMainWindow(object sender, RoutedEventArgs e)
         {
-                MainWindow mainW = new MainWindow();
-                mainW.Show();
-                this.Close();
-            
+            MainWindow mainW = new MainWindow(NamePlayer1.Text, NamePlayer2.Text);
+            mainW.Show();
+            this.Close();
         }
 
         private void ExitApplication(object sender, RoutedEventArgs e)
@@ -40,24 +40,24 @@ namespace OthelloWPF
         private void LoadSave(object sender, RoutedEventArgs e)
         {
             // Create OpenFileDialog 
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            OpenFileDialog dlg = new OpenFileDialog();
 
             // Set filter for file extension and default file extension 
             //dlg.DefaultExt = ".png";
             //dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
 
-
             // Display OpenFileDialog by calling ShowDialog method 
             Nullable<bool> result = dlg.ShowDialog();
-
 
             // Get the selected file name and display in a TextBox 
             if (result == true)
             {
                 // Open document 
-                string filename = dlg.FileName;
-                //textBox1.Text = filename;
-                MessageBox.Show(filename);
+                string fileName = dlg.FileName;
+                MainWindow mainW = new MainWindow(fileName);
+                mainW.Show();
+                this.Close();
+
             }
         }
     }

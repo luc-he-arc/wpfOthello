@@ -1,6 +1,8 @@
-﻿using OthelloWPF.Models;
+﻿using Microsoft.Win32;
+using OthelloWPF.Models;
 using System;
 using System.ComponentModel;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
@@ -11,8 +13,12 @@ namespace OthelloWPF
         GameController gameController;
         UniformGrid graphicalBoard;
 
+        private Timer updateTimeTimer;
+
+        private const int SIZE = 8;
 
         ///**       Bindings        **//
+        ///
         private int scoreWhite = 0;
         public int ScoreWhite {
             get
@@ -23,7 +29,6 @@ namespace OthelloWPF
             {
                 scoreWhite = value;
                 OnPropertyChanged("ScoreWhite");
-                
             }
         }
 
@@ -38,7 +43,6 @@ namespace OthelloWPF
             {
                 scoreBlack = value;
                 OnPropertyChanged("ScoreBlack");
-
             }
         }
 
@@ -51,22 +55,42 @@ namespace OthelloWPF
 
         //**        Main        **//
 
-        public MainWindow()
+        public MainWindow(String namePlayer1, String namePlayer2)
         {
-
             //Logics
-            int size = 8;
-            Game game = new Game(size, new Player(), new Player());
+            Game game = new Game(SIZE, new Player(namePlayer1), new Player(namePlayer2));
             gameController = new GameController(game, graphicalBoard);
-            
+
             //Graphics
-            InitializeComponent();
-            InitBoard(size, size);
-            
-            ScoreWhite = game.GetWhiteScore();
-            ScoreBlack = game.GetBlackScore();
+            InitGraphics();
         }
 
+        /// <summary>
+        /// Load a saved game
+        /// </summary>
+        /// <param name="namePlayer1">Name of the player1</param>
+        /// <param name="namePlayer2">Name of the player2</param>
+        /// <param name="fileName">The path for the data of the game saved you want to load</param>
+        public MainWindow(String fileName)
+        {
+            //Load game            
+            Game game = Tools.DeSerializeObject<Game>(fileName);
+            gameController = new GameController(game, graphicalBoard);
+
+            //Update window datas
+            InitGraphics();
+        }
+
+        private void InitGraphics()
+        {
+            InitializeComponent();
+            InitBoard(SIZE, SIZE);
+
+            NamePlayer1.Content = gameController.Game.WhitePlayer.Name;
+            NamePlayer2.Content = gameController.Game.BlackPlayer.Name;
+
+            UpdateInterface();
+        }
 
         private void InitBoard(int column, int line)
         {
@@ -93,8 +117,6 @@ namespace OthelloWPF
             }
 
             UpdateBoard();
-
-            //Show player turn
         }
 
         private void OnBoardClick(object sender, RoutedEventArgs e)
@@ -102,6 +124,19 @@ namespace OthelloWPF
             ChessSquareControl square = (ChessSquareControl) sender;
 
             bool gameContinue = gameController.PlayMove(square.x, square.y);
+
+            UpdateInterface();
+
+            if (!gameContinue)
+            {
+                EndMenu endmenu = new EndMenu();
+                endmenu.Show();
+                this.Close();
+            }
+        }
+
+        private void UpdateInterface()
+        {
             UpdateBoard();
 
             ScoreWhite = gameController.GetWhiteScore();
@@ -116,13 +151,6 @@ namespace OthelloWPF
             {
                 whiteTurn.Visibility = Visibility.Hidden;
                 blackTurn.Visibility = Visibility.Visible;
-            }
-
-            if (!gameContinue)
-            {
-                EndMenu endmenu = new EndMenu();
-                endmenu.Show();
-                this.Close();
             }
         }
 
@@ -166,13 +194,54 @@ namespace OthelloWPF
 
         private void ExitApplication(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
-
+            MessageBoxResult dialogResult = MessageBox.Show("Do you want to exit without saving?", "Exiting", MessageBoxButton.YesNo);
+            if (dialogResult == MessageBoxResult.Yes)
+            {
+                System.Windows.Application.Current.Shutdown();
+            }
+            
         }
 
         private void SaveCurrentGame(object sender, RoutedEventArgs e)
         {
-            //SAUVEGARDE
+            // Create dialog and ask for location for saving
+            SaveFileDialog dlg = new SaveFileDialog();
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result.HasValue)
+            {
+                string fileNameSave = dlg.FileName;         //Get back filename
+                Tools.SerializeObject(gameController.Game, fileNameSave);      //Save by serialize
+            }
+            else
+                MessageBox.Show("Error while trying to save datas");
+        }
+
+        private Timer SetTimer()
+        {
+            // Create a timer with a 1 second interval.
+            Timer timer = new Timer(1000);
+
+            // Hook up the Elapsed event for the timer. 
+            timer.Elapsed += OnTimedEvent;
+            timer.AutoReset = true;
+            timer.Enabled = true;
+
+            return timer;
+        }
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            //Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}", e.SignalTime);
+
+            if (gameController.IsWhiteTurn())
+            {
+                TimerJ1.Content = "";
+            }
+            else
+            {
+
+            }
         }
     }
 }
