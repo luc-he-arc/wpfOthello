@@ -1,4 +1,5 @@
 ﻿using OthelloWPF.Models;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -60,13 +61,12 @@ namespace OthelloWPF
             
             //Graphics
             InitializeComponent();
-            double temp = this.Height - 400;
-            ExitButtonMainWindow.Margin = new Thickness(0,temp, 0, 0);
             InitBoard(size, size);
             
             ScoreWhite = game.GetWhiteScore();
             ScoreBlack = game.GetBlackScore();
         }
+
 
         private void InitBoard(int column, int line)
         {
@@ -120,8 +120,8 @@ namespace OthelloWPF
 
             if (!gameContinue)
             {
-                MenuWindow menu = new MenuWindow();
-                menu.Show();
+                EndMenu endmenu = new EndMenu();
+                endmenu.Show();
                 this.Close();
             }
         }
@@ -155,6 +155,24 @@ namespace OthelloWPF
         private ChessSquareControl GetChessControlFromIndex(int col, int row)
         {
             return (ChessSquareControl) graphicalBoard.Children[col * 8 + row];
+        }
+
+        private void AdaptButtonPosition(object sender, SizeChangedEventArgs e)
+        {
+            double temp = this.Height - (this.Height / 2) + 80;
+            ExitButtonMainWindow.Margin = new Thickness(0, temp, 0, 0);
+            SaveButtonMainWindow.Margin = new Thickness(0, temp, 0, 0);
+        }
+
+        private void ExitApplication(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+
+        }
+
+        private void SaveCurrentGame(object sender, RoutedEventArgs e)
+        {
+            //SAUVEGARDE
         }
     }
 }

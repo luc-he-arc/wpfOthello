@@ -54,6 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EndMenu.xaml.cs">
+      <DependentUpon>EndMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\LogicalBoard.cs" />
     <Compile Include="MenuWindow.xaml.cs">
       <DependentUpon>MenuWindow.xaml</DependentUpon>
@@ -63,6 +66,10 @@
     <Compile Include="Models\Player.cs" />
     <Compile Include="Tools.cs" />
     <Page Include="ChessSquareControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EndMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -126,10 +133,13 @@
     <Resource Include="Images\othello_masque.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\background2.jpg" />
+    <Resource Include="Images\sword.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\sword.png" />
+    <Resource Include="Images\background3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\background2.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,16 +6,20 @@
         xmlns:local="clr-namespace:OthelloWPF"
         mc:Ignorable="d"
         Title="Othello Zelda" 
-        Height="450" 
-        Width ="280"
+        Height="495" 
+        Width ="305"
         ResizeMode="NoResize">
     <Window.Background>
         <ImageBrush ImageSource="Images/background2.jpg"/>
     </Window.Background>
     <StackPanel Orientation="Vertical">
-        <Label Name="titleMenuWindows" Content="Othello Zelda" VerticalAlignment="Top" FontSize="26" HorizontalAlignment="Center" Foreground="#FF4F0707" Margin="0,25,0,15" FontFamily="Viner Hand ITC" FontWeight="Bold"/>
-        <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,30,0,15" FontWeight="Bold" Click="OpenMainWindow">Commencer</Button>
-        <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,20,0,15" FontWeight="Bold">Reprendre</Button>
-        <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,20,0,15" FontWeight="Bold" Click="ExitApplication">Quitter</Button>
+        <Label Name="titleMenuWindows" Content="Othello Zelda" VerticalAlignment="Top" FontSize="30" HorizontalAlignment="Center" Foreground="#FF4F0707" Margin="0,10,0,15" FontFamily="Viner Hand ITC" FontWeight="Bold"/>
+        <Label Content="Nom joueur 1" FontSize="20" HorizontalAlignment="Center" Foreground="WhiteSmoke" FontFamily="Viner Hand ITC" FontWeight="Bold" Margin="0,0,0,0"/>
+        <TextBox Name="NamePlayer1" Background="Transparent" FontSize="20" FontFamily="Viner Hand ITC" Margin="60,0,60,0"  Foreground="WhiteSmoke" FontWeight="Bold" TextAlignment="Center"></TextBox>
+        <Label Content="Nom joueur 2" FontSize="20" HorizontalAlignment="Center" Foreground="WhiteSmoke" FontFamily="Viner Hand ITC" FontWeight="Bold" Margin="0,0,0,0"/>
+        <TextBox Name="NamePlayer2" Background="Transparent" FontSize="20" FontFamily="Viner Hand ITC" Margin="60,0,60,0" Foreground="WhiteSmoke" FontWeight="Bold" TextAlignment="Center"></TextBox>
+        <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,35,0,15" FontWeight="Bold" Click="OpenMainWindow">Commencer</Button>
+        <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,10,0,15" FontWeight="Bold" Click="LoadSave">Reprendre</Button>
+        <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,10,0,10" FontWeight="Bold" Click="ExitApplication">Quitter</Button>
     </StackPanel>
 </Window>
