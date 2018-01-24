@@ -2,9 +2,11 @@
 using OthelloWPF.Models;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 
 namespace OthelloWPF
 {
@@ -13,7 +15,8 @@ namespace OthelloWPF
         GameController gameController;
         UniformGrid graphicalBoard;
 
-        private Timer updateTimeTimer;
+        private DispatcherTimer updateTimeTimer;
+        private Stopwatch stopwatch;
 
         private const int SIZE = 8;
 
@@ -93,6 +96,12 @@ namespace OthelloWPF
 
             NamePlayer1.Content = gameController.Game.WhitePlayer.Name;
             NamePlayer2.Content = gameController.Game.BlackPlayer.Name;
+
+            //Init updateTimer
+            updateTimeTimer = CreateOneSecondTimer();
+            updateTimeTimer.Start();
+            stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             UpdateInterface();
         }
@@ -222,30 +231,39 @@ namespace OthelloWPF
                 MessageBox.Show("Error while trying to save datas");
         }
 
-        private Timer SetTimer()
+        private DispatcherTimer CreateOneSecondTimer()
         {
             // Create a timer with a 1 second interval.
-            Timer timer = new Timer(1000);
+            DispatcherTimer timer = new DispatcherTimer();
 
             // Hook up the Elapsed event for the timer. 
-            timer.Elapsed += OnTimedEvent;
-            timer.AutoReset = true;
-            timer.Enabled = true;
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += OnTimedEvent;
 
             return timer;
         }
 
-        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        private void OnTimedEvent(Object source, EventArgs e)
         {
+            long elapsed = stopwatch.ElapsedMilliseconds;
+            stopwatch.Restart();
+
+            //Console.WriteLine(elapsed);
             //Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}", e.SignalTime);
 
             if (gameController.IsWhiteTurn())
             {
-                TimerJ1.Content = "";
+                gameController.Game.WhitePlayer.LeftTimeMillis -= elapsed;
+                TimeSpan timeleft = TimeSpan.FromMilliseconds(gameController.Game.WhitePlayer.LeftTimeMillis);
+                
+                TimerJ2.Content = timeleft.ToString(@"mm\:ss");
             }
             else
             {
+                gameController.Game.BlackPlayer.LeftTimeMillis -= elapsed;
+                TimeSpan timeleft = TimeSpan.FromMilliseconds(gameController.Game.BlackPlayer.LeftTimeMillis);
 
+                TimerJ1.Content = timeleft.ToString(@"mm\:ss");
             }
         }
     }

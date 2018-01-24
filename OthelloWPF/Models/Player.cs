@@ -16,6 +16,9 @@ namespace OthelloWPF.Models
         private int score;
         public int Score { get { return score; } set { score = value; } }
 
+        private long leftTimeMillis;
+        public long LeftTimeMillis { get { return leftTimeMillis; } set { leftTimeMillis = value; } }
+
         public Player() : this("Mystery player")
         {
             //Empty
@@ -25,6 +28,7 @@ namespace OthelloWPF.Models
         {
             this.name = name;
             score = 0;
+            leftTimeMillis = 300000;
         }
     }
 }
