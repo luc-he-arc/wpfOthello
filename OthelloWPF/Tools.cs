@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -7,77 +8,39 @@ namespace OthelloWPF
 {
     //https://stackoverflow.com/questions/6115721/how-to-save-restore-serializable-object-to-from-file
     static class Tools
-    {
+    {        
         /// <summary>
         /// Serializes an object.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="serializableObject"></param>
-        /// <param name="fileName"></param>
-        public static void SerializeObject<T>(T serializableObject, string fileName)
+        /// <typeparam name="T">Type of the object</typeparam>
+        /// <param name="serializableObject">the object you want to serialize</param>
+        /// <param name="fileName">the path where you want to save it</param>
+        public static void SerializeObjectBinary<T>(T serialazable, string fileName)
         {
-            if (serializableObject == null) { return; }
+            if (serialazable == null) { return; }
 
-            try
-            {
-                XmlDocument xmlDocument = new XmlDocument();
-                XmlSerializer serializer = new XmlSerializer(serializableObject.GetType());
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    serializer.Serialize(stream, serializableObject);
-                    stream.Position = 0;
-                    xmlDocument.Load(stream);
-                    xmlDocument.Save(fileName);
-                    stream.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw ex;
-            }
+            FileStream stream = File.OpenWrite(fileName);
+            var formatter = new BinaryFormatter();
+            formatter.Serialize(stream, serialazable);
+            stream.Close();
         }
-
 
         /// <summary>
         /// Deserializes an xml file into an object list
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        public static T DeSerializeObject<T>(string fileName)
+        /// <typeparam name="T">Type of the object to deserialize</typeparam>
+        /// <param name="fileName">the path where of the file you want to deserialize</param>
+        /// <returns>the object deserialized</returns>
+        public static T DeSerializeObjectBinary<T>(string fileName)
         {
             if (string.IsNullOrEmpty(fileName)) { return default(T); }
 
-            T objectOut = default(T);
+            FileStream stream = File.OpenRead(fileName);
+            var formatter = new BinaryFormatter();
+            T v = (T) formatter.Deserialize(stream);
+            stream.Close();
 
-            try
-            {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(fileName);
-                string xmlString = xmlDocument.OuterXml;
-
-                using (StringReader read = new StringReader(xmlString))
-                {
-                    Type outType = typeof(T);
-
-                    XmlSerializer serializer = new XmlSerializer(outType);
-                    using (XmlReader reader = new XmlTextReader(read))
-                    {
-                        objectOut = (T)serializer.Deserialize(reader);
-                        reader.Close();
-                    }
-
-                    read.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw ex;
-            }
-
-            return objectOut;
+            return v;
         }
     }
 }

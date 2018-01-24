@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OthelloWPF.Models
 {
+    [Serializable]
     public class Player
     {
         private string name;

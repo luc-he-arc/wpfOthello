@@ -6,7 +6,8 @@ using static OthelloWPF.Models.LogicalBoard;
 
 namespace OthelloWPF.Models
 {
-    public class Game // : ISerializable
+    [Serializable]
+    public class Game
     {
         Player whitePlayer;
         public Player WhitePlayer { get {return whitePlayer;} set { whitePlayer = value; } }

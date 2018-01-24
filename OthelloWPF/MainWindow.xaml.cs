@@ -55,6 +55,11 @@ namespace OthelloWPF
 
         //**        Main        **//
 
+        /// <summary>
+        /// New game
+        /// </summary>
+        /// <param name="namePlayer1">Name of the player1</param>
+        /// <param name="namePlayer2">Name of the player2</param>
         public MainWindow(String namePlayer1, String namePlayer2)
         {
             //Logics
@@ -74,7 +79,7 @@ namespace OthelloWPF
         public MainWindow(String fileName)
         {
             //Load game            
-            Game game = Tools.DeSerializeObject<Game>(fileName);
+            Game game = Tools.DeSerializeObjectBinary<Game>(fileName);//DeSerializeObject<Game>(fileName);
             gameController = new GameController(game, graphicalBoard);
 
             //Update window datas
@@ -211,7 +216,7 @@ namespace OthelloWPF
             if (result.HasValue)
             {
                 string fileNameSave = dlg.FileName;         //Get back filename
-                Tools.SerializeObject(gameController.Game, fileNameSave);      //Save by serialize
+                Tools.SerializeObjectBinary(gameController.Game, fileNameSave);//SerializeObject(gameController.Game, fileNameSave);      //Save by serialize
             }
             else
                 MessageBox.Show("Error while trying to save datas");

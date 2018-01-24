@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace OthelloWPF.Models
 {
+    [Serializable]
     public class LogicalBoard
     {
         private int[,] values;
