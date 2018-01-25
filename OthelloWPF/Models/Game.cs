@@ -9,15 +9,18 @@ namespace OthelloWPF.Models
     [Serializable]
     public class Game
     {
-        Player whitePlayer;
+        //Players
+        Player whitePlayer;         
         public Player WhitePlayer { get {return whitePlayer;} set { whitePlayer = value; } }
 
         Player blackPlayer;
         public Player BlackPlayer { get { return blackPlayer; } set { blackPlayer = value; } }
 
+        //Logical board
         LogicalBoard board;
         public LogicalBoard Board { get { return board; } set { board = value; } }
 
+        //Indicate the current player turn, true if white
         bool isWhiteTurn;
         public bool IsWhiteTurn { get { return isWhiteTurn; } set { isWhiteTurn = value; } }
 
@@ -26,16 +29,22 @@ namespace OthelloWPF.Models
         int white = (int) LogicalBoard.PawnState.White;
         int empty = (int) LogicalBoard.PawnState.Empty;
 
-        //**     Serialization       **/
-
+        /// <summary>
+        /// Used of serialization
+        /// </summary>
         public Game() : this(8, new Player(), new Player())
         {
             //Empty
         } 
 
-       
         //**     Main     **/
 
+        /// <summary>
+        /// Create a brand new game
+        /// </summary>
+        /// <param name="size">size of the logical board</param>
+        /// <param name="player1">player1 Player object</param>
+        /// <param name="player2">player2 Player object</param>
         public Game(int size, Player player1, Player player2)
         {
             //Init main classes
@@ -58,6 +67,12 @@ namespace OthelloWPF.Models
             isWhiteTurn = false;                               //Black begin
         }
 
+        /// <summary>
+        /// Apply logic when a move is played
+        /// </summary>
+        /// <param name="column">move x coordinate</param>
+        /// <param name="line">move y coordinate</param>
+        /// <returns>false if the game is over</returns>
         public bool PlayMove(int column, int line)
         {
             board[column, line] = GetColorFromTurn(isWhiteTurn);//Add pawn
@@ -76,6 +91,7 @@ namespace OthelloWPF.Models
                 //Check if this player can move after
                 if (GetPossibleMoves(isWhiteTurn).Count <= 0)
                 {
+                    //No one can play. Game is over
                     Console.WriteLine((isWhiteTurn ? "Blanc" : "Noir") + " Passe son tour");
                     Console.WriteLine("Fin de la partie");
 
@@ -86,8 +102,15 @@ namespace OthelloWPF.Models
             return true;
         }
 
-        //*      Game      *//
+        //*      Privates       *//
 
+        /// <summary>
+        /// Calculate the consequences of a move.
+        /// Turn needed pawns.
+        /// </summary>
+        /// <param name="column">move x coordinate</param>
+        /// <param name="line">move y coordinate</param>
+        /// <param name="isWhite">current player turn</param>
         private void TurnPawns(int column, int line, bool isWhite)
         {
             int playerColor = GetColorFromTurn(isWhite);
@@ -111,6 +134,17 @@ namespace OthelloWPF.Models
             }
         }
 
+        /// <summary>
+        /// Check pawns to return in specified direction.
+        /// if incrementX=1 and icrementY=1, will check diagonal Up/Right.
+        /// </summary>
+        /// <param name="column">move x coordinate</param>
+        /// <param name="line">move y coordinate</param>
+        /// <param name="playerColor">color of the current player</param>
+        /// <param name="opponentColor">color of the current opponent player</param>
+        /// <param name="incrementX">direction increment x</param>
+        /// <param name="incrementY">direction increment y</param>
+        /// <returns>a list of the pawns to return</returns>
         private List<Tuple<int, int>> CheckPawnsInDirection(int column, int line, int playerColor, int opponentColor, int incrementX, int incrementY)
         {
             List<Tuple<int, int>> eventuallyReturned = new List<Tuple<int, int>>();
@@ -156,6 +190,11 @@ namespace OthelloWPF.Models
                 return Enumerable.Empty<Tuple<int, int>>().ToList<Tuple<int, int>>();
         }
 
+        /// <summary>
+        /// Get all possible moves with the current logical board and the given turn
+        /// </summary>
+        /// <param name="isWhiteTurn">current player turn</param>
+        /// <returns>all possible moves</returns>
         private List<Tuple<int, int>> GetPossibleMoves(bool isWhiteTurn)
         {
             List<Tuple<int, int>> possibleMoves = new List<Tuple<int, int>>();
@@ -172,38 +211,17 @@ namespace OthelloWPF.Models
             return possibleMoves;
         }
 
-        public bool IsPlayable(int column, int line, bool isWhite)
-        {
-            bool valid = false;
-
-            if (board[column, line] == empty)
-            {
-                int playerColor = GetColorFromTurn(isWhite);                        
-                int opponentColor = GetColorFromTurn(!isWhite);
-
-                //If a direction is valid, the move is valid. We check each
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 0))      //Right
-                    valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 0))     //Left
-                    valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, 1))      //Up
-                    valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, -1))     //Down
-                    valid = true;
-
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 1))      //Right/Up
-                    valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, -1))    //Left/Down
-                    valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, -1))     //Right/Down
-                    valid = true;
-                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 1))     //Left/Up
-                    valid = true;
-            }
-
-            return valid;
-        }
-
+        /// <summary>
+        /// Check if a pawn is playable in one direction
+        /// if incrementX=1 and icrementY=1, will check diagonal Up/Right.
+        /// </summary>
+        /// <param name="column">move x coordinate</param>
+        /// <param name="line">move y coordinate</param>
+        /// <param name="playerColor">color of the current player</param>
+        /// <param name="opponentColor">color of the current opponent player</param>
+        /// <param name="incrementX">direction increment x</param>
+        /// <param name="incrementY">direction increment y</param>
+        /// <returns>true if the direction is playable</returns>
         private bool CheckPlayableInDirection(int column, int line, int playerColor, int opponentColor, int incrementX, int incrementY)
         {
             bool isPawnInBetween = false;
@@ -244,8 +262,6 @@ namespace OthelloWPF.Models
             return isValid;
         }
 
-        //*     Private     *//
-
         private void UpdateScore()
         {
             whitePlayer.Score = 0;
@@ -273,6 +289,45 @@ namespace OthelloWPF.Models
         }
 
         //*      Getters      *//
+
+        /// <summary>
+        /// Check if the [column, line] move is playable on logical board
+        /// </summary>
+        /// <param name="column">x coordinate</param>
+        /// <param name="line">y coordinate</param>
+        /// <param name="isWhite">current player turn</param>
+        /// <returns></returns>
+        public bool IsPlayable(int column, int line, bool isWhite)
+        {
+            bool valid = false;
+
+            if (board[column, line] == empty)
+            {
+                int playerColor = GetColorFromTurn(isWhite);
+                int opponentColor = GetColorFromTurn(!isWhite);
+
+                //If a direction is valid, the move is valid. We check each
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 0))      //Right
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 0))     //Left
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, 1))      //Up
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 0, -1))     //Down
+                    valid = true;
+
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 1))      //Right/Up
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, -1))    //Left/Down
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, -1))     //Right/Down
+                    valid = true;
+                if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 1))     //Left/Up
+                    valid = true;
+            }
+
+            return valid;
+        }
 
         public int[,] GetBoard()
         {

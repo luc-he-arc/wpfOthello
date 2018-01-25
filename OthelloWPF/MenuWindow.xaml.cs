@@ -27,7 +27,15 @@ namespace OthelloWPF
 
         private void OpenMainWindow(object sender, RoutedEventArgs e)
         {
-            MainWindow mainW = new MainWindow(NamePlayer1.Text, NamePlayer2.Text);
+            String name1 = "Player1";
+            String name2 = "Player2";
+
+            if (NamePlayer1.Text != "")
+                name1 = NamePlayer1.Text;
+            if (NamePlayer2.Text != "")
+                name2 = NamePlayer2.Text;
+
+            MainWindow mainW = new MainWindow(name1, name2);
             mainW.Show();
             this.Close();
         }

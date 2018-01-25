@@ -28,7 +28,7 @@ namespace OthelloWPF.Models
         {
             this.name = name;
             score = 0;
-            leftTimeMillis = 300000;
+            leftTimeMillis = 300000;    //5 min = 5 (min) * 60 (sec) * 1000 (millis) = 300'000 millis
         }
     }
 }

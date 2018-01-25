@@ -15,6 +15,9 @@ namespace OthelloWPF.Models
         public enum PawnState { White = 0, Black = 1, Empty = -1 };
         public const int Size = 8;
 
+        /// <summary>
+        /// Init all board to PawnState.Empty value
+        /// </summary>
         public LogicalBoard()
         {
             values = new int[Size, Size];
@@ -28,18 +31,7 @@ namespace OthelloWPF.Models
             }
         }
 
-        public void UpdateBoard(int[,] newValues)
-        {
-            for (int i = 0; i < values.GetLength(0); i++)
-            {
-                for (int j = 0; j < values.GetLength(1); j++)
-                {
-                    Values[i, j] = newValues[i, j];
-                }
-            }
-        }
-
-
+        //Array accessor
         //https://msdn.microsoft.com/en-us/library/ms182152.aspx
         public int this[int index, int index2]
         {

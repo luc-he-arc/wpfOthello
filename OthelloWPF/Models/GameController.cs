@@ -5,9 +5,9 @@ namespace OthelloWPF.Models
 {
     class GameController
     {
-        Game game;
-        public Game Game { get { return game; } }
-        UniformGrid graphicalBoard;
+        Game game;                                  //Logical game holder
+        public Game Game { get { return game; } }   
+        UniformGrid graphicalBoard;                 //UI Board
 
         public GameController(Game game, UniformGrid graphicalBoard)
         {
@@ -17,11 +17,23 @@ namespace OthelloWPF.Models
 
         //*     Public     *//
 
+        /// <summary>
+        /// Called when a user play a move on [column, line] coordinates
+        /// </summary>
+        /// <param name="column">the x coordinate</param>
+        /// <param name="line">the y coordinate</param>
+        /// <returns>false if the game is over</returns>
         public bool PlayMove(int column, int line)
         {
             return game.PlayMove(column, line);
         }
 
+        /// <summary>
+        /// Ask if [column, line] move is playable
+        /// </summary>
+        /// <param name="column">the x coordinate</param>
+        /// <param name="line">the y coordinate</param>
+        /// <returns>true if the move is playable</returns>
         public bool IsPlayable(int column, int line)
         {
             return game.IsPlayable(column, line, game.IsWhiteTurn);
@@ -29,6 +41,10 @@ namespace OthelloWPF.Models
 
         //*      Getters      *//
 
+        /// <summary>
+        /// Get logical board
+        /// </summary>
+        /// <returns>an int[,] logical board</returns>
         public int[,] GetBoard()
         {
             return game.GetBoard();
@@ -47,13 +63,6 @@ namespace OthelloWPF.Models
         public bool IsWhiteTurn()
         {
             return game.IsWhiteTurn;
-        }
-
-        //*     Saving      *//
-
-        public void SaveGame(string fileName)
-        {
-            
         }
     }
 }
