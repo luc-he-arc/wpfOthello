@@ -18,7 +18,6 @@ namespace OthelloWPF
         public static void SerializeObjectBinary<T>(T serialazable, string fileName)
         {
             if (serialazable == null) { return; }
-
             FileStream stream = File.OpenWrite(fileName);
             var formatter = new BinaryFormatter();
             formatter.Serialize(stream, serialazable);

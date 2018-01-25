@@ -19,8 +19,8 @@
             <Image Source="Images/othello_masque.png" Width="60"  HorizontalAlignment="Right" Margin="50,0,50,0"/>
         </DockPanel>
         <DockPanel>
-            <Label Content="0" FontSize="28" HorizontalAlignment="Left" Foreground="WhiteSmoke" FontFamily="Viner Hand ITC" FontWeight="Bold" Margin="65,0,0,0"/>
-            <Label Content="0" FontSize="28" HorizontalAlignment="Right" Foreground="WhiteSmoke" FontFamily="Viner Hand ITC" FontWeight="Bold" Margin="0,0,65,0"/>
+            <Label Name="EndMenuScoreWhite" Content="" FontSize="28" HorizontalAlignment="Left" Foreground="WhiteSmoke" FontFamily="Viner Hand ITC" FontWeight="Bold" Margin="65,0,0,0"/>
+            <Label Name="EndMenuScoreBlack" Content="" FontSize="28" HorizontalAlignment="Right" Foreground="WhiteSmoke" FontFamily="Viner Hand ITC" FontWeight="Bold" Margin="0,0,65,0"/>
         </DockPanel>
         <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,30,0,15" FontWeight="Bold" Click="ReStartGame">Recommencer</Button>
         <Button Height="40" Width="150" Background="#C8C8C8"  BorderBrush="#C8C8C8" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#FF4F0707" FontSize="20" FontFamily="Viner Hand ITC" Margin="0,20,0,15" FontWeight="Bold" Click="ExitApplication">Quitter</Button>

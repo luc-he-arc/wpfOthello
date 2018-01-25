@@ -15,13 +15,26 @@ using System.Windows.Shapes;
 namespace OthelloWPF
 {
     /// <summary>
-    /// Logique d'interaction pour EndMenu.xaml
+    /// Logical interaction for EndMenu.xaml
     /// </summary>
     public partial class EndMenu : Window
     {
-        public EndMenu()
+        private int finalScoreWhite;
+        private int finalScoreBlack;
+
+        /// <summary>
+        /// constructor with the last score for the black and white palyer
+        /// display score in label meant for that purpose
+        /// </summary>
+        /// <param name="fScoreWhite"></param>
+        /// <param name="fScoreBlack"></param>
+        public EndMenu(int fScoreWhite, int fScoreBlack)
         {
             InitializeComponent();
+            finalScoreWhite = fScoreWhite;
+            finalScoreBlack = fScoreBlack;
+            EndMenuScoreWhite.Content = finalScoreWhite;
+            EndMenuScoreBlack.Content = finalScoreBlack;
         }
 
         private void ReStartGame(object sender, RoutedEventArgs e)

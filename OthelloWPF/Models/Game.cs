@@ -33,14 +33,7 @@ namespace OthelloWPF.Models
             //Empty
         } 
 
-        /*public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("whitePlayer", whitePlayer);
-            info.AddValue("blackPlayer", blackPlayer);
-            info.AddValue("board", board);
-            info.AddValue("isWhiteTurn", isWhiteTurn);
-        }*/
-
+       
         //**     Main     **/
 
         public Game(int size, Player player1, Player player2)
@@ -185,10 +178,10 @@ namespace OthelloWPF.Models
 
             if (board[column, line] == empty)
             {
-                int playerColor = GetColorFromTurn(isWhite);                        //Lisibilité + réutilisation
+                int playerColor = GetColorFromTurn(isWhite);                        
                 int opponentColor = GetColorFromTurn(!isWhite);
 
-                //Si une direction est valide, le coup est valide. On vérifie chacunes
+                //If a direction is valid, the move is valid. We check each
                 if (CheckPlayableInDirection(column, line, playerColor, opponentColor, 1, 0))      //Right
                     valid = true;
                 if (CheckPlayableInDirection(column, line, playerColor, opponentColor, -1, 0))     //Left
@@ -216,35 +209,35 @@ namespace OthelloWPF.Models
             bool isPawnInBetween = false;
             bool isValid = false;
 
-            //On va vérifier les cases suivantes à la notre dans la direction donnée
+            //We will check the following boxes to ours in the given direction
             int x = column + incrementX;
             int y = line + incrementY;
 
 
             while (x >= 0 && x < board.Values.GetLength(0) && y >= 0 && y < board.Values.GetLength(1))
             {
-                if (board[x, y] == opponentColor)       //Si c'est la couleur du joueur adverse
+                if (board[x, y] == opponentColor)       //If it is the color of the opposing player
                 {
-                    isPawnInBetween = true;             //Il y a eventuellement une piece adverse entre celui qu'on vérifie et une autre du plateau
+                    isPawnInBetween = true;             //There is possibly an enemy piece between the one we check and another of the board
                 }
-                else if (board[x, y] == playerColor)    //Si c'est la couleur du joueur courant
+                else if (board[x, y] == playerColor)    //If it's the color of the current player
                 {
-                    if (isPawnInBetween)                //Si il y a des pieces adverses entre celle joué et l'actuelle
+                    if (isPawnInBetween)                //If there are opposing pieces between the one played and the current one
                     {
-                        isValid = true;                 //Le coup est jouable
+                        isValid = true;                 //The play is playable
                         break;
                     }
-                    else                                //La liste est vide. rien à retourner entre les 2 pièces
+                    else                                //The list is empty. nothing to return between the 2 chips
                     {
                         break;
                     }
                 }
-                else if (board[x, y] == empty)          //Si c'est une case vide
+                else if (board[x, y] == empty)          //If it's an empty case
                 {
-                    break;                              //Le coup est invalide
+                    break;                              //The play is not palyable
                 }
 
-                x += incrementX;                        //Case suivante
+                x += incrementX;                        //next case
                 y += incrementY;
             }
 

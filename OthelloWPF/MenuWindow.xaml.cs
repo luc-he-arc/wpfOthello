@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace OthelloWPF
 {
     /// <summary>
-    /// Logique d'interaction pour MenuWindow.xaml
+    /// Menu with tree option , start game, load a game, exit the game 
     /// </summary>
     public partial class MenuWindow : Window
     {
@@ -41,10 +41,6 @@ namespace OthelloWPF
         {
             // Create OpenFileDialog 
             OpenFileDialog dlg = new OpenFileDialog();
-
-            // Set filter for file extension and default file extension 
-            //dlg.DefaultExt = ".png";
-            //dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
 
             // Display OpenFileDialog by calling ShowDialog method 
             Nullable<bool> result = dlg.ShowDialog();

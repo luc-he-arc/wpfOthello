@@ -96,6 +96,8 @@ namespace OthelloWPF
 
             NamePlayer1.Content = gameController.Game.WhitePlayer.Name;
             NamePlayer2.Content = gameController.Game.BlackPlayer.Name;
+            TimerJ1.Content = "";
+            TimerJ2.Content = "";
 
             //Init updateTimer
             updateTimeTimer = CreateOneSecondTimer();
@@ -106,6 +108,11 @@ namespace OthelloWPF
             UpdateInterface();
         }
 
+        /// <summary>
+        /// initialization of the graphical board
+        /// </summary>
+        /// <param name="column"></param>
+        /// <param name="line"></param>
         private void InitBoard(int column, int line)
         {
             graphicalBoard = Board;
@@ -138,17 +145,20 @@ namespace OthelloWPF
             ChessSquareControl square = (ChessSquareControl) sender;
 
             bool gameContinue = gameController.PlayMove(square.x, square.y);
-
+            
             UpdateInterface();
 
             if (!gameContinue)
             {
-                EndMenu endmenu = new EndMenu();
+                EndMenu endmenu = new EndMenu(scoreWhite, scoreBlack);
                 endmenu.Show();
                 this.Close();
             }
         }
 
+        /// <summary>
+        /// Update the board UI depends on the logical board 
+        /// </summary>
         private void UpdateInterface()
         {
             UpdateBoard();
@@ -168,6 +178,9 @@ namespace OthelloWPF
             }
         }
 
+        /// <summary>
+        /// Update the board
+        /// </summary>
         private void UpdateBoard()
         {
             int[,] board = gameController.GetBoard();
@@ -199,13 +212,15 @@ namespace OthelloWPF
             return (ChessSquareControl) graphicalBoard.Children[col * 8 + row];
         }
 
+        // Try to adapt the position of the save button and exit button ... not working as good as we think
         private void AdaptButtonPosition(object sender, SizeChangedEventArgs e)
         {
-            double temp = this.Height - (this.Height / 2) + 80;
+            double temp = this.Height - (this.Height / 2) + 20;
             ExitButtonMainWindow.Margin = new Thickness(0, temp, 0, 0);
             SaveButtonMainWindow.Margin = new Thickness(0, temp, 0, 0);
         }
 
+        // Exit method and tell to user if he want to save
         private void ExitApplication(object sender, RoutedEventArgs e)
         {
             MessageBoxResult dialogResult = MessageBox.Show("Do you want to exit without saving?", "Exiting", MessageBoxButton.YesNo);
@@ -215,7 +230,11 @@ namespace OthelloWPF
             }
             
         }
-
+        /// <summary>
+        /// Method for save the game with a SaveFileDialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveCurrentGame(object sender, RoutedEventArgs e)
         {
             // Create dialog and ask for location for saving
@@ -225,12 +244,16 @@ namespace OthelloWPF
             if (result.HasValue)
             {
                 string fileNameSave = dlg.FileName;         //Get back filename
-                Tools.SerializeObjectBinary(gameController.Game, fileNameSave);//SerializeObject(gameController.Game, fileNameSave);      //Save by serialize
+                if(fileNameSave == "") {
+                    // nothin, continue the game
+                } else {
+                    Tools.SerializeObjectBinary(gameController.Game, fileNameSave);//SerializeObject(gameController.Game, fileNameSave);      //Save by serialize
+                }
             }
             else
                 MessageBox.Show("Error while trying to save datas");
         }
-
+      
         private DispatcherTimer CreateOneSecondTimer()
         {
             // Create a timer with a 1 second interval.
@@ -243,6 +266,11 @@ namespace OthelloWPF
             return timer;
         }
 
+        /// <summary>
+        /// manages the event of time and calculate the time of the two player
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
         private void OnTimedEvent(Object source, EventArgs e)
         {
             long elapsed = stopwatch.ElapsedMilliseconds;
